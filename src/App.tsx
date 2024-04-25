@@ -10,7 +10,7 @@ import { Profile } from './pages/profile.tsx'
 
 
 function App() {
-  const status: boolean = true;
+  const status: boolean = false;
    if(status){
     return (
       <>
@@ -21,11 +21,11 @@ function App() {
                 <h3>PFE</h3>
              </div>
              <div className='flex flex-col'>
-              <div className='flex   items-center  text-2xl p-4' ><img src='../public/images/dashboard_icon.png' alt="dash icon " /><Link to='/dashboard'> Dashboard</Link></div>
-              <div className='flex   items-center  text-2xl p-4' ><img src="../public/images/materiel.png" alt="" /><Link to='/Materiel'>Materiel</Link></div>
-              <div className='flex   items-center  text-2xl p-4' ><img src="../public/images/accounts.png" alt="" /><Link to='/accounts'>Accounts</Link></div>
-              <div className='flex   items-center  text-2xl p-4' ><img src="../public/images/profile.png" alt="" /><Link to='/profile'>Profile</Link></div>
-              <div className='flex   items-center  text-2xl p-4' ><img src="../public/images/logout.png" alt="" /><Link to='/logout'>Log out</Link></div>
+              <div className='flex   items-center  text-2xl p-4' ><img src='../public/icons/dashboard_icon.png' alt="dash icon " /><Link to='/dashboard'> Dashboard</Link></div>
+              <div className='flex   items-center  text-2xl p-4' ><img src="../public/icons/materiel.png" alt="" /><Link to='/Materiel'>Materiel</Link></div>
+              <div className='flex   items-center  text-2xl p-4' ><img src="../public/icons/accounts.png" alt="" /><Link to='/accounts'>Accounts</Link></div>
+              <div className='flex   items-center  text-2xl p-4' ><img src="../public/icons/profile.png" alt="" /><Link to='/profile'>Profile</Link></div>
+              <div className='flex   items-center  text-2xl p-4' ><img src="../public/icons/logout.png" alt="" /><Link to='/logout'>Log out</Link></div>
 
              </div>
           
