@@ -4,9 +4,9 @@ import  {Row } from '../component/model.ts'
 
 export const Materiel = () => {
   const data:Row[] = [
-    { name: "John Doe", age: 30, role: "Developer" },
-    { name: "Jane Smith", age: 25, role: "Designer" },
-    { name: "Tom Brown", age: 35, role: "Manager" },
+    { name: "pc", categorie:"informatique", owner: "ahmed",date:"" },
+    { name: "casque", categorie:"informatique", owner: "mohamed",date:""},
+    { name: "cahier", categorie:"changement", owner: "noureddine",date:""},
   ];
   
   return (

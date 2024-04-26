@@ -8,7 +8,7 @@ import {Row} from './model.ts'
 
 const TableComponent:React.FC<{ data: Row[] }> = ({ data }) => {
   
-const [selectedRow, setSelectedRow] = useState<Row |null >(null);
+  const [selectedRow, setSelectedRow] = useState<Row |null >(null);
   const [duplicate_data,setnewData] =useState<Row[]>(data)
   const [addMateriel,setaddMateriel] =useState< boolean| null>(null)
   
@@ -50,8 +50,9 @@ const [selectedRow, setSelectedRow] = useState<Row |null >(null);
         <thead>
           <tr>
             <th className='h-14 w-40 bg-slate-700 text-xl'>Name</th>
-            <th className='h-14 w-40 bg-slate-700 text-xl'>Age</th>
-            <th className='h-14 w-40 bg-slate-700 text-xl'>Role</th>
+            <th className='h-14 w-40 bg-slate-700 text-xl'>Categorie</th>
+            <th className='h-14 w-40 bg-slate-700 text-xl'>owner</th>
+            <th className='h-14 w-40 bg-slate-700 text-xl'>date d'ajoute</th>
             <th className='h-14 w-40 bg-slate-700 text-xl'>Actions</th>
           </tr>
         </thead>
@@ -59,12 +60,13 @@ const [selectedRow, setSelectedRow] = useState<Row |null >(null);
           {duplicate_data.map((item, index) => (
             <tr key={index} >
               <td className=' bg-slate-600 text-center text-white'>{item.name}</td>
-              <td className='  bg-slate-600 text-center text-white'>{item.age}</td>
-              <td className=' bg-slate-600  text-center text-white'>{item.role}</td>
-              <td  className=' bg-slate-600 text-center w-60'>
-              <button className="bg-blue-500 rounded-xl w-20 font-bold" onClick={() => handleviewClick(item)}>show</button>
-              <button className="bg-lime-500 rounded-xl w-20 font-bold" onClick={() => onEdit()}>Edit</button>
-              <button className='bg-red-600 rounded-xl w-20 font-bold cursor-pointer' onClick={() => onDelete(item)}>Delete</button>
+              <td className='  bg-slate-600 text-center text-white'>{item.categorie}</td>
+              <td className=' bg-slate-600  text-center text-white'>{item.owner}</td>
+              <td className=' bg-slate-600  text-center text-white'>{item.date}</td>
+              <td  className=' bg-slate-600 text-center w-80'>
+              <button className="bg-blue-500 rounded-xl w-20 font-bold m-2" onClick={() => handleviewClick(item)}>show</button>
+              <button className="bg-lime-500 rounded-xl w-20 font-bold m-2" onClick={() => onEdit()}>Edit</button>
+              <button className='bg-red-600 rounded-xl w-20 font-bold cursor-pointer m-2' onClick={() => onDelete(item)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -80,8 +82,9 @@ const [selectedRow, setSelectedRow] = useState<Row |null >(null);
               </span>
             </div>
             <p>Name: {selectedRow.name}</p>
-            <p>Age: {selectedRow.age}</p>
-            <p>Role: {selectedRow.role}</p>
+            <p>Age: {selectedRow.categorie}</p>
+            <p>Owner: {selectedRow.owner}</p>
+            <p>Date d'ajoute: {selectedRow.date}</p>
           </div>
         </div>)}
 
