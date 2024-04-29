@@ -1,13 +1,13 @@
-package com.example.ahmedsaadi;
+package com.host.systeme;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AhmedSaadiApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AhmedSaadiApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
