@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AddMateriel } from './addMateriel';
+import { AddMateriel } from './addMateriel.tsx';
 import {Row} from './model.ts'
 
 
@@ -28,10 +28,8 @@ const TableComponent:React.FC<{ data: Row[] }> = ({ data }) => {
      setaddMateriel(true)
 
   }
-  function handlesaveMaterial(material:Row){
-      console.log(material)
-      setnewData([...duplicate_data,material])
-      setaddMateriel(null)
+  function handlesaveMaterial(status:boolean){
+      setaddMateriel(status)
   }
  
   
