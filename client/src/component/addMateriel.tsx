@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Row} from './model'
+import {Row} from '../models/model'
 import axios from 'axios';
 
 
@@ -31,6 +31,7 @@ export const AddMateriel:React.FC<props> = ({addMaterial}) => {
             axios.post('http://localhost:8081/api/add', material)
             .then(response => {
               addMaterial(false,response.data)
+              console.log(material)
             })
             .catch(error => {
                 console.error('Error sending data: ', error);

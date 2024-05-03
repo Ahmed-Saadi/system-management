@@ -1,10 +1,12 @@
 package com.host.controller;
 import com.host.Repositories.MaterialRepo;
 import com.host.model.Material;
+import com.host.Dto.MaterialDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -16,14 +18,18 @@ public class MaterielController {
     @Autowired
     private MaterialRepo materialRepo;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> testConnection(){
-        return ResponseEntity.ok("connection established");
-    }
+//    @GetMapping("/test")
+//    public ResponseEntity<String> testConnection(){
+//        return ResponseEntity.ok("connection established");
+//    }
 
     @PostMapping("/add")
-    public ResponseEntity<Material> addmateriel(@RequestBody Material material){
-        Material new_material = materialRepo.save(material);
+    public ResponseEntity<Material> addmateriel(@RequestBody MaterialDto material){
+        Material new_material = new Material();
+        new_material.setName(material.name());
+        new_material.setCategorie(material.categorie());
+        new_material.setDate(material.date());
+        materialRepo.save(new_material);
     return ResponseEntity.ok(new_material);
     }
     @GetMapping("/get")
@@ -40,8 +46,7 @@ public class MaterielController {
 
     @PutMapping("/update")
     public ResponseEntity<Material> changeMaterial(@RequestBody Material material) {
-        System.out.println(material);
-        Optional<Material> existingMaterialOptional = materialRepo.findById(material.getId());
+        Optional<Material> existingMaterialOptional = materialRepo.findById(material.getM_id());
         if (existingMaterialOptional.isPresent()) {
             Material existingMaterial = existingMaterialOptional.get();
             existingMaterial.setName(material.getName());

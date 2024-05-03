@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import  {Row } from '../component/model.ts'
+import  {Row } from '../models/model.ts'
 import axios from "axios";
 import { AddMateriel } from "../component/addMateriel.tsx";
 
@@ -20,7 +20,6 @@ export const Materiel = () => {
         .catch(error => {
             console.error('Error fetching data: ', error);
         });
-      console.log('change has been made');
       
 }, [update]);
 
@@ -32,8 +31,7 @@ export const Materiel = () => {
 
   function onEdit(e:React.FormEvent<HTMLFormElement>,row : Row) {
     e.preventDefault();
-    const updatedData = data.map((item) => (item.id === row.id ? row : item));
-    console.log(updatedData)
+    const updatedData = data.map((item) => (item.m_id === row.m_id ? row : item));
     try{
       axios.put('http://localhost:8081/api/update',row)
     .then(() => setData(updatedData))
@@ -46,7 +44,7 @@ export const Materiel = () => {
 
   function onDelete(index:Row) {
     try{
-      axios.delete(`http://localhost:8081/api/del/${index.id}`).then(() => {setData([...data.filter((i) => i.id !== index.id)])
+      axios.delete(`http://localhost:8081/api/del/${index.m_id}`).then(() => {setData([...data.filter((i) => i.m_id !== index.m_id)])
       setupdate(update => !update)
     }
     )

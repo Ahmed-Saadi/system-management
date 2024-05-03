@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AddMateriel } from './addMateriel.tsx';
-import {Row} from './model.ts'
+import {Row} from '../models/model.ts'
 
 
 
