@@ -23,6 +23,7 @@ public class User {
     private String phone_number;
     private String dob;
     private String profession;
+    private String gender;
     @OneToMany
     private List<UserMaterial> material;
 }
