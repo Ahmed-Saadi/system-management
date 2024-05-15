@@ -2,7 +2,7 @@ export interface Row {
     m_id?:number;
     name:string;
     categorie:string;
-    owner?:string;
+    owner: Owner |null;
     date:string;
   }
   
@@ -16,4 +16,11 @@ export interface Account{
   dob:string;
   profession:string;
   gender:string;
+}
+
+export interface Owner{
+  u_id? : number;
+  username :string ;
+  user_family_name:string;
+  profession:string;
 }

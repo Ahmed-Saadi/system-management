@@ -1,15 +1,16 @@
 package com.host.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name="users")
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -24,6 +25,7 @@ public class User {
     private String dob;
     private String profession;
     private String gender;
-    @OneToMany
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL, orphanRemoval = true)
+
     private List<UserMaterial> material;
 }

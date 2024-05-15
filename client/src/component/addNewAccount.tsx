@@ -65,50 +65,51 @@ export const AddNewAccount: React.FC<props> = ({
 
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 flex-col">
-        <div className="bg-white flex flex-col ">
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 flex-col">
+        <div className="bg-first-color flex flex-col rounded-3xl">
           <button
-            className=" bg-red-400 text-black  h-8 w-8 rounded-full self-end  m-1 "
+            className="closeBtn self-end p-1 m-4"
             onClick={handleCloseButoonForm}
           >
-            X
+            <img src="../public/icons/close-icon.svg" alt="close btn" />
           </button>
           <form
             onSubmit={handleSubmit(handleSubmitButton)}
             className="flex flex-col"
           >
-            <div className="flex justify-between w-96 px-4 font-semibold">
+            <div className="span-costum-configuration">
               <label>Name :</label>
               <input
                 {...register("username", {
                   required: "this shit is required ",
                 })}
-                className="w-4/5"
+                className="input-costum-configuration"
               />
             </div>
             <ErrorMessage
               errors={errors}
               name="username"
               render={({ message }) => (
-                <p className=" bg-red-300 rounded-sm">{message}</p>
+                <p className=" error-message">{message}</p>
               )}
             />
-            <div>
+            <div className="span-costum-configuration">
               <label>Familly Name : </label>
               <input
                 {...register("user_family_name", {
                   required: "please put some shit here",
                 })}
+                className="input-costum-configuration"
               />
             </div>
             <ErrorMessage
               errors={errors}
               name="user_family_name"
               render={({ message }) => (
-                <p className=" bg-red-300 rounded-sm">{message}</p>
+                <p className=" error-message">{message}</p>
               )}
             />
-            <div>
+            <div className="span-costum-configuration">
               <label>Email : </label>
               <input
                 {...register("email", {
@@ -118,25 +119,28 @@ export const AddNewAccount: React.FC<props> = ({
                     message: "enter a valid email exemple@domain.com",
                   },
                 })}
+                className="input-costum-configuration"
               />
-              <ErrorMessage
+              
+            </div>
+            <ErrorMessage
                 errors={errors}
                 name="email"
                 render={({ message }) => (
-                  <p className=" bg-red-300 rounded-sm">{message}</p>
+                  <p className=" error-message">{message}</p>
                 )}
               />
-            </div>
-            <div>
+            <div className="span-costum-configuration">
               <label>Phone Number : </label>
               <input
                 {...register("phone_number", {
                   required: "Please enter your phone number",
                   pattern: {
-                    value: /^\+(?:[0-9] ?){10}[0-9]$/,
+                    value: /^\+(?:[0-9] ?){11}[0-9]$/,
                     message: "Invalid phone number format",
                   },
                 })}
+                className="input-costum-configuration"
                 placeholder="+212-000-000-000"
               />
             </div>
@@ -144,15 +148,16 @@ export const AddNewAccount: React.FC<props> = ({
               errors={errors}
               name="phone_number"
               render={({ message }) => (
-                <p className=" bg-red-300 rounded-sm">{message}</p>
+                <p className="error-message">{message}</p>
               )}
             />
-            <div>
+            <div className="span-costum-configuration">
               <label>Date Of Birth : </label>
               <input
                 {...register("dob", {
                   required: "please enter your date of  birth",
                 })}
+                className="input-costum-configuration"
                 type="date"
               />
             </div>
@@ -160,25 +165,26 @@ export const AddNewAccount: React.FC<props> = ({
               errors={errors}
               name="dob"
               render={({ message }) => (
-                <p className=" bg-red-300 rounded-sm">{message}</p>
+                <p className=" error-message">{message}</p>
               )}
             />
-            <div>
+            <div className="span-costum-configuration">
               <label>Profession : </label>
               <input
                 {...register("profession", {
                   required: "please enter the profession",
                 })}
+                className="input-costum-configuration"
               />
             </div>
             <ErrorMessage
               errors={errors}
               name="profession"
               render={({ message }) => (
-                <p className=" bg-red-300 rounded-sm">{message}</p>
+                <p className=" error-message">{message}</p>
               )}
             />
-            <div>
+            <div className="span-costum-configuration">
               <label>Gender : </label>
               <select
                 {...register("gender", {
@@ -186,6 +192,7 @@ export const AddNewAccount: React.FC<props> = ({
                   validate: (value) =>
                     value !== "" || "Please select a gender ",
                 })}
+                className="input-costum-configuration"
               >
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
@@ -196,11 +203,11 @@ export const AddNewAccount: React.FC<props> = ({
               errors={errors}
               name="gender"
               render={({ message }) => (
-                <p className=" bg-red-300 rounded-sm">{message}</p>
+                <p className=" error-message">{message}</p>
               )}
             />
-            <button type="submit" className=" w-1/2 self-center">
-              Submit
+            <button type="submit" className=" submit-button-costum  w-1/3 self-center  my-2">
+              Valider
             </button>
           </form>
         </div>

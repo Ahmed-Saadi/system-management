@@ -51,27 +51,28 @@ export const Accounts = () => {
 
   return (
     <>
-      <div className="flex flex-col  items-center justify-center">
-        <h1 className=" font-bold text-3xl border-black border-4 p-4">
+    <div className="flex  flex-grow  items-start bg-first-color  font-color ">
+      <div className="flex items-center flex-grow flex-col m-8 ">
+        <h1 className=" font-bold text-4xl py- bg-white  p-6 rounded-3xl  shadow-md">
           List of Accounts
         </h1>
         <button
-          className="self-end m-2 bg-lime-400 rounded-full p-2 font-bold"
+          className="rounded-3xl font-bold w-40 h-8 p-1 bg-second-color shadow hover:bg-forth-color self-end mx-8"
           onClick={handleClickNewAccount}
         >
-          Create New Account
+          Add Account
         </button>
-        <div className="flex flex-col border-4 m-2 p-2 ">
-          <table>
-            <thead>
-              <tr className="p-2 font-bold text-2xl ">
-                <th className="w-52 h-4 text-center border-2">Name</th>
-                <th className="w-52 h-4 text-center border-2">Familly Name</th>
-                <th className="w-52 h-4 text-center border-2">Email</th>
-                <th className="w-52 h-4 text-center border-2">Profession</th>
-                <th className="w-52 h-4 text-center border-2">Phone Number</th>
-                <th className="w-52 h-4 text-center border-2">Date Of Birth</th>
-                <th className="w-52 h-4 text-center border-2">Gender</th>
+        
+          <table className=" border-none bg-white shadow-md  rounded-3xl ">
+            <thead >
+              <tr className="p-2  font-semibold text-xl  border-b-2">
+                <th className="table-Row-costum">Name</th>
+                <th className="table-Row-costum">Familly Name</th>
+                <th className="table-Row-costum">Email</th>
+                <th className="table-Row-costum">Profession</th>
+                <th className="table-Row-costum">Phone Number</th>
+                <th className="table-Row-costum">Date Of Birth</th>
+                <th className="table-Row-costum">Gender</th>
               </tr>
             </thead>
             <tbody>
@@ -79,22 +80,22 @@ export const Accounts = () => {
                 <tr
                   key={item.u_id}
                   onClick={() => handleclick(item)}
-                  className="cursor-pointer text-center"
+                  className="cursor-pointer text-center rounded text-lg h-14 hover:bg-slate-100"
                 >
-                  <td className="w-52 h-4  border-2">{item.username}</td>
-                  <td className="w-52 h-4  border-2">
+                  <td >{item.username}</td>
+                  <td >
                     {item.user_family_name}
                   </td>
-                  <td className="w-52 h-4  border-2">{item.email}</td>
-                  <td className="w-52 h-4  border-2">{item.phone_number}</td>
-                  <td className="w-52 h-4  border-2">{item.profession}</td>
-                  <td className="w-52 h-4  border-2">{item.dob}</td>
-                  <td className="w-52 h-4  border-2">{item.gender}</td>
+                  <td >{item.email}</td>
+                  <td >{item.phone_number}</td>
+                  <td >{item.profession}</td>
+                  <td >{item.dob}</td>
+                  <td >{item.gender}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
+       
       </div>
       {/*-------------show a row of data-------------- */}
 
@@ -116,6 +117,7 @@ export const Accounts = () => {
           setAccounts={setAccounts}
         />
       )}
+      </div>
     </>
   );
 };

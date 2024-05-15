@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Row } from "../models/model";
+import { Account, Owner, Row } from "../models/model";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { AddOwner } from "./addOwner";
 import { ErrorMessage } from "@hookform/error-message";
+import { Materiel } from "../pages/materiel";
 
 interface props {
   addMaterial: (status: boolean, material?: Row) => void;
@@ -13,7 +15,7 @@ interface props {
 const emptyRow = {
   name: "",
   categorie: "",
-  owner: "",
+  owner: {},
   date: "",
 };
 
@@ -28,18 +30,27 @@ export const AddMateriel: React.FC<props> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<Row>({ defaultValues: modifyRow ? modifyRow : emptyRow });
+
   const [addDate, setAddDate] = useState<string>("");
+  const [Addowner, setAddOwner] = useState<boolean>(false);
+  const [owner, setOwner] = useState<Owner | null>(null);
 
   useEffect(() => {
     setAddDate(new Date().toLocaleString());
+    
   }, []);
 
   const handleSubmitBtn: SubmitHandler<Row> = (newMaterial: Row) => {
-    console.log(newMaterial)
+    if (owner) {
+      newMaterial = { ...newMaterial, owner };
+    }
+    
     if (newMaterial.m_id) {
+      console.log('this is the data i have sent : ',newMaterial)
       axios
         .put("http://localhost:8081/api/update", newMaterial)
         .then((response) => {
+          console.log("this is the data come from the put : ",response.data)
           setData((prevState: Row[]) => {
             const index = prevState.findIndex(
               (row) => row.m_id === newMaterial.m_id
@@ -60,6 +71,7 @@ export const AddMateriel: React.FC<props> = ({
           setData((prevState: Row[]) => [...prevState, response.data])
         );
     }
+
     addMaterial(false);
     setModify(null);
   };
@@ -70,41 +82,60 @@ export const AddMateriel: React.FC<props> = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 flex-col">
-      <div className=" bg-white m-20 p-14">
-        <div className="p-8 font-bold text-3xl flex ">
-          <h1>Add new materiel</h1>
-          <button
-            className=" to-stone-900 bg-red-600 rounded-full mx-3.5 w-10 justify-self-end"
-            onClick={handleCloseBtn}
-          >
-            X
-          </button>
-        </div>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 flex-col ">
+      <div className=" bg-first-color  p-8 font-color rounded-2xl flex flex-col">
+        <button className="closeBtn self-end my-4" onClick={handleCloseBtn}>
+          <img src="../public/icons/close-icon.svg" alt="close Btn" />
+        </button>
+
         <form
           className="flex flex-col"
           onSubmit={handleSubmit(handleSubmitBtn)}
         >
-          <span className="font-bold">
+          <span className=" span-costum-configuration  ">
             <label>Name : </label>
             <input
               {...register("name", { required: "please enter the name" })}
+              className="input-costum-configuration"
             />
           </span>
-          <span className="font-bold">
+          <span className=" span-costum-configuration  ">
             <label>Categorie : </label>
             <input
               {...register("categorie", { required: "enter the categorie" })}
+              className="input-costum-configuration"
             />
           </span>
-          <span className="font-bold">
-            <label>Owner : </label>
-            <input {...register("owner")} />
-          </span>
+          {!Addowner && !modifyRow?.owner && (
+            <p
+              className="  text-center font-color font-semibold text-lg cursor-pointer w-2/3 border-2 py-1 m-2 self-center  hover:bg-forth-color"
+              onClick={() => setAddOwner(true)}
+            >
+              Add an owner
+            </p>
+          )}
+
+          {Addowner && !owner && (
+            <AddOwner setOwner={setOwner} owner={modifyRow?.owner}  />
+          )}
+          {owner &&  (
+            <div className="span-costum-configuration">
+              <p>Owner : </p>
+              <div
+                className="input-costum-configuration cursor-pointer"
+                onClick={() => {
+                  setOwner(null);
+                  setAddOwner(true);
+                }}
+              >
+                {owner.username} {owner.user_family_name} , {owner.profession}
+              </div>
+            </div>
+          )}
 
           <button
             type="submit"
-            className="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400"
+            className="submit-button-costum w-1/3 self-center font-color font-semibold text-xl "
           >
             Confirm
           </button>

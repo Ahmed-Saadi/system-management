@@ -14,6 +14,7 @@ export const Materiel = () => {
     axios
       .get("http://localhost:8081/api/get")
       .then((response) => {
+       
         setData([...response.data]);
       })
       .catch((error) => {
@@ -27,7 +28,7 @@ export const Materiel = () => {
 
   function onDelete(index: Row) {
     try {
-      console.log(index.m_id);
+      
       axios.delete(`http://localhost:8081/api/del/${index.m_id}`).then(() => {
         setData([...data.filter((i) => i.m_id !== index.m_id)]);
       });
@@ -49,14 +50,14 @@ export const Materiel = () => {
     setModify(item);
   };
   const handleviewClick = (item: Row) => {
-    setModify(item);
+    setSelectedRow(item);
   };
 
   return (
     <>
       <div className="flex  flex-grow  items-start bg-first-color  font-color ">
         <div className="flex items-center flex-grow flex-col m-8">
-          <div className=" font-bold text-4xl py-8 bg-white  px-4 rounded py-4">
+          <div className=" font-bold text-4xl py-8 bg-white  p-8 rounded-3xl  shadow-md">
             <h1>List de Materiel</h1>
           </div>
           <div className="flex-grow"></div>
@@ -64,13 +65,13 @@ export const Materiel = () => {
           <div className="flex flex-col">
             <div className="flex justify-end my-4" >
               <button
-                className=" rounded-3xl font-bold w-24 h-8 bg-second-color"
+                className=" rounded-3xl font-bold w-40 h-8 p-1 bg-second-color shadow hover:bg-forth-color"
                 onClick={handleAdd}
               >
-                Add Row
+                Add Material
               </button>
             </div>
-            <table className="rounded-xl border-none bg-white">
+            <table className="rounded-xl border-none bg-white shadow-md">
               <thead>
                 <tr className=" bg-my-blue text-xl border-2">
                   <th className="h-14 w-60">Name</th>
@@ -83,39 +84,41 @@ export const Materiel = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((item, index) => (
-                  <tr key={index} className="  text-center font-color justify-center border-2 font-semibold">
+                {data.map((item) => (
+                  <tr key={item.m_id} className="  text-center font-color justify-center border-2 font-semibold shadow-md ">
                     <td >
                       {item.name}
                     </td>
                     <td >
                       {item.categorie}
                     </td>
-                    <td >
-                      {item.owner}
-                    </td>
+                    {
+                      item.owner ? (<td >
+                      {item.owner?.username} {item.owner?.user_family_name} {item.owner?.profession}
+                    </td>): (<td></td>)
+                    }
                     <td >
                       {item.date}
                     </td>
                     <td  className="flex">
                     
                       <button
-                        className="bg-blue-500 rounded-xl w-20 font-bold m-2"
+                        className="material-Row-Btn hover:bg-forth-color"
                         onClick={() => handleviewClick(item)}
                       >
-                        show
+                       <img src="./public/icons/view-icon.svg" />
                       </button>
                       <button
-                        className=" rounded-xl font-bold m-2 cursor-pointer"
+                        className=" material-Row-Btn hover:bg-forth-color"
                         onClick={() => handleModifyClick(item)}
                       >
                        <img src="./public/icons/edit-icon.svg" />
                       </button>
                       <button
-                        className="bg-red-600 rounded-xl w-20 font-bold cursor-pointer m-2"
+                        className="material-Row-Btn hover:bg-forth-color"
                         onClick={() => onDelete(item)}
                       >
-                        Delete
+                       <img src="./public/icons/delete-icon.svg" />
                       </button>
                     </td>
                   </tr>
