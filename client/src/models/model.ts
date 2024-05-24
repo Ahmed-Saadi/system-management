@@ -3,13 +3,13 @@ export interface Row {
     name:string;
     categorie:string;
     owner: Owner |null;
-    date:string;
+    date?:String;
   }
   
 
 export interface Account{
   u_id? : number;
-  user_family_name:string;
+  family_name:string;
   username : string;
   email:string;
   phone_number:string;
@@ -21,6 +21,23 @@ export interface Account{
 export interface Owner{
   u_id? : number;
   username :string ;
-  user_family_name:string;
+  family_name:string;
   profession:string;
+}
+export interface Material_Demand{
+  d_id?: number;
+  categorie:string;
+  type:string;
+  description:string;
+  name:string;
+  status:string;
+}
+
+export interface Demand_congéer{
+  dc_id:number;
+  name:string;
+  type:string;
+  date_debut:String;
+  date_fin:string;
+  cause:string;
 }

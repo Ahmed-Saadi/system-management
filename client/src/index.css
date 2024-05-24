@@ -3,46 +3,66 @@
 @tailwind utilities;
 
 @layer components {
-    .span-costum-configuration {
-      @apply flex font-bold p-2 text-base  justify-between items-center mx-4;
-    }
-    .input-costum-configuration {
-      @apply bg-white px-4 mx-4 shadow-md focus:outline-none rounded-md flex-1 p-1 hover:shadow-slate-400 ;
-    }
-    .submit-button-costum {
-      @apply px-4 bg-[#B05CFF] rounded shadow-lg p-1 m-2 hover:bg-[#931FFF];
-    }
-    .closeBtn { 
-        @apply bg-[#B05CFF] rounded-full mx-4 w-8 justify-self-end hover:bg-[#931FFF] items-center text-center p-1; 
-    }
-    .material-Row-Btn{
-        @apply rounded-xl font-bold m-2 cursor-pointer;
-
-    }
-    .table-Row-costum{
-      @apply w-[183px] h-14 text-center;
-    }
-    .error-message{
-      @apply bg-red-50 border-l-4 border-red-500 text-red-700 p-1 mx-8;
-    }
-    @layer utilities {
-      /* Add custom scrollbar styles */
-      .scrollbar::-webkit-scrollbar {
-        width: 8px;
-      }
-    
-      .scrollbar::-webkit-scrollbar-track {
-        background-color: #f1f1f1;
-      }
-    
-      .scrollbar::-webkit-scrollbar-thumb {
-        background-color: #df3df8;
-        border-radius: 4px;
-      }
-    
-      .scrollbar::-webkit-scrollbar-thumb:hover {
-        background-color:#ba15f1;
-      }
-    }
-    /* ... */
+  .colomn_width{
+    @apply h-14 w-80;
   }
+  .span-costum-configuration {
+    @apply flex font-bold p-2 text-base  justify-between items-center mx-4;
+  }
+  .input-costum-configuration {
+    @apply bg-white px-4 mx-4 shadow-md focus:outline-none rounded-md flex-1 p-1 hover:shadow-slate-400;
+  }
+  .submit-button-costum {
+    @apply px-4 bg-[#B05CFF] rounded shadow-lg p-1 m-2 hover:bg-[#931FFF];
+  }
+  .closeBtn {
+    @apply bg-[#B05CFF] rounded-full mx-4 w-8 justify-self-end hover:bg-[#931FFF] items-center text-center p-1;
+  }
+  .material-Row-Btn {
+    @apply rounded-xl font-bold m-2 cursor-pointer;
+  }
+  .table-Row-costum {
+    @apply w-[400px] h-14 text-center;
+  }
+  .error-message {
+    @apply bg-red-50 border-l-4 border-red-500 text-red-700 p-1 mx-8;
+  }
+  .drop_menu-costum {
+    @apply relative inline-block mx-12;
+  }
+  .email_buttons{
+    @apply w-full p-2 bg-amber-400 font-semibold text-center my-4;
+  }
+  .drop-down-style{
+    @apply flex h-12 justify-between items-center p-2  bg-green-100 font-semibold;
+  }
+  .table-size{
+    @apply w-32 px-2;
+  }
+  .acount-info{
+    @apply flex justify-evenly items-start w-full bg-red-100 m-3;
+  }
+  .demand_view_row{
+    @apply flex justify-between items-start bg-[#8de1f0]  px-4 py-2 my-2 w-full rounded-lg ;
+  }
+  @layer utilities {
+    /* Add custom scrollbar styles */
+    .scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .scrollbar::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+      background-color: #df3df8;
+      border-radius: 4px;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+      background-color: #ba15f1;
+    }
+  }
+  /* ... */
+}

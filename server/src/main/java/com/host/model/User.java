@@ -17,7 +17,7 @@ public class User {
     @Id
     @GeneratedValue
     private int u_id ;
-    private String user_family_name;
+    private String family_name;
     private String username;
     private String password;
     private String email;

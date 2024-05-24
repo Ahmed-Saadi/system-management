@@ -34,7 +34,7 @@ public class AccountsController {
     public ResponseEntity<User> adduser(@RequestBody UserDto user){
         User new_user = new User();
         new_user.setUsername(user.username());
-        new_user.setUser_family_name(user.user_family_name());
+        new_user.setFamily_name(user.family_name());
         new_user.setEmail(user.email());
         new_user.setPassword(user.password());
         new_user.setPhone_number(user.phone_number());
@@ -51,7 +51,7 @@ public class AccountsController {
         if (existingUserOptional.isPresent()) {
             User existingUser=existingUserOptional.get();
             existingUser.setUsername(user.username());
-            existingUser.setUser_family_name(user.user_family_name());
+            existingUser.setFamily_name(user.family_name());
             existingUser.setEmail(user.email());
             existingUser.setPassword(user.password());
             existingUser.setPhone_number(user.phone_number());

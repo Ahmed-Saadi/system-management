@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.swing.text.html.Option;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +38,11 @@ public class MaterielController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<Materiel_Owner> addmateriel(@RequestBody MaterialDto material){
+    public ResponseEntity<Materiel_Owner> addmateriel(@RequestBody MaterialDto material) throws ParseException {
         Material material1 = new Material();
         material1.setName(material.name());
         material1.setCategorie(material.categorie());
-        material1.setDate(material.date());
+        material1.setDate(createDate());
         materialRepo.save(material1);
         Materiel_Owner materielOwner = new Materiel_Owner();
         materielOwner.setM_id(material1.getM_id());
@@ -51,6 +54,7 @@ public class MaterielController {
             UserMaterial userMaterial = new UserMaterial();
             userMaterial.setMaterial_id(material1);
             userMaterial.setUser_id(user.get());
+            userMaterial.setFirst_date(createDate());
             userMaterialRepo.save(userMaterial);
             Owner owner = createowner(user);
             materielOwner.setOwner(owner);
@@ -89,19 +93,26 @@ public class MaterielController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<Materiel_Owner> changeMaterial(@RequestBody Materiel_Owner material) {
+    public ResponseEntity<Materiel_Owner> changeMaterial(@RequestBody Materiel_Owner material) throws ParseException {
         Optional<Material> existingMaterialOptional = materialRepo.findById(material.getM_id());
         if (!existingMaterialOptional.isPresent())
             return ResponseEntity.notFound().build();
         Material existingMaterial = existingMaterialOptional.get();
         existingMaterial.setName(material.getName());
         existingMaterial.setCategorie(material.getCategorie());
-        if(material.getOwner().u_id() != 0) {
+       if(material.getOwner() != null){
+        if(material.getOwner().u_id() != 0) {   // find if the owner is not empty so we can add it in the relatiosnship
+            Optional<UserMaterial> findusermaterial = userMaterialRepo.findUserMaterialHavingAnOldOwner(existingMaterial.getM_id());
+            if(findusermaterial.isPresent()){
+                findusermaterial.get().setLast_date(createDate());
+                userMaterialRepo.save(findusermaterial.get());
+            }
             Optional<User> user = userRepo.findById(material.getOwner().u_id());
             if (user.isPresent()){
                 UserMaterial userMaterial = new UserMaterial();
                 userMaterial.setMaterial_id(existingMaterial);
                 userMaterial.setUser_id(user.get());
+                userMaterial.setFirst_date(createDate());
                 userMaterialRepo.save(userMaterial);
                 existingMaterial.getOwner().add(userMaterial);
             }
@@ -110,12 +121,21 @@ public class MaterielController {
             material.setCategorie(material.getCategorie());
             material.setOwner(createowner(user));
         }
+       }else{
+           materialRepo.save(existingMaterial);
+            material.setM_id(existingMaterial.getM_id());
+            material.setCategorie(material.getCategorie());
+        }
 
         return ResponseEntity.ok(material);
 
     }
 
     private @NotNull Owner createowner(@NotNull Optional<User> user ){
-        return new  Owner(user.get().getU_id(),user.get().getUsername(),user.get().getUser_family_name(),user.get().getProfession());
+        return new  Owner(user.get().getU_id(),user.get().getUsername(),user.get().getFamily_name(),user.get().getProfession());
     }
+    private String createDate() throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    }
+
 }
