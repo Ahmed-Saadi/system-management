@@ -22,7 +22,7 @@ public class Material {
 
     @Id
     @GeneratedValue
-    private int m_id;
+    private long m_id;
     private String name;
     private String categorie;
     private String date;

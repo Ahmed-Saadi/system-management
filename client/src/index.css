@@ -45,6 +45,11 @@
   .demand_view_row{
     @apply flex justify-between items-start bg-[#8de1f0]  px-4 py-2 my-2 w-full rounded-lg ;
   }
+  @layer components {
+    .loader {
+      @apply animate-spin border-blue-500;
+    }
+  }
   @layer utilities {
     /* Add custom scrollbar styles */
     .scrollbar::-webkit-scrollbar {
@@ -65,4 +70,8 @@
     }
   }
   /* ... */
+}
+
+body {
+  overflow: hidden;
 }

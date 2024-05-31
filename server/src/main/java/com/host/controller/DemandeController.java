@@ -1,7 +1,9 @@
 package com.host.controller;
 
+import com.host.Repositories.DemandeCongéRepo;
 import com.host.Repositories.DemandeMaterialRepo;
 import com.host.model.Demand_materiel;
+import com.host.model.Demande_Congé;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +16,10 @@ import java.util.List;
 public class DemandeController {
     @Autowired
     private DemandeMaterialRepo demandeMaterialRepo;
+    @Autowired
+    private DemandeCongéRepo demandeCongéRepo;
 
-
+        // demande de materiel
     @GetMapping("/get")
     public ResponseEntity<List<Demand_materiel>> getAllTheDemandsForAuser(){
         List<Demand_materiel> demands = demandeMaterialRepo.findAll();
@@ -26,4 +30,20 @@ public class DemandeController {
         Demand_materiel demandMateriel1 = demandeMaterialRepo.save(demandMateriel);
         return ResponseEntity.ok(demandMateriel1);
     }
+
+
+    //demande de congé
+    @GetMapping("conger/get")
+    public ResponseEntity<List<Demande_Congé>> getAllTheDemandsCongéForAuser(){
+        List<Demande_Congé> demands = demandeCongéRepo.findAll();
+        return ResponseEntity.ok(demands);
+    }
+    @PostMapping("conger/add")
+    public ResponseEntity<Demande_Congé> addANewDemandCongé(@RequestBody Demande_Congé demandeCongé){
+        Demande_Congé demandeCongé1 = demandeCongéRepo.save(demandeCongé);
+        return ResponseEntity.ok(demandeCongé1);
+    }
+
+
+
 }

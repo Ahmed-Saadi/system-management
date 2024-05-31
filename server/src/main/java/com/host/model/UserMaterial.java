@@ -16,7 +16,7 @@ import java.util.List;
 public class UserMaterial {
     @Id
     @GeneratedValue
-    private int user_material_id;
+    private long user_material_id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference

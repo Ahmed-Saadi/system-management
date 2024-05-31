@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { DragEvent, useState } from "react";
 import { Header } from "../component/client/header";
 import { Link, Route, Routes } from "react-router-dom";
 import { Notfound } from "./notfound";
@@ -55,7 +55,6 @@ export const Client = () => {
             </button>
             {isdemands && (
               <div>
-                
                 <Link to="/m_demandes">
                   <div className="justify-start drop-down-style">
                     <img src="../public/icons/tool-icon.svg" alt="" />
@@ -117,7 +116,10 @@ export const Client = () => {
 
                 <Link to="messagesSent">
                   <div className="justify-start drop-down-style">
-                    <img src="../public/icons/send-icon.svg" alt="sent icon" />
+                    <img
+                      src="../public/icons/send-email-icon.svg"
+                      alt="sent icon"
+                    />
                     <h2 className="p-2">message sent</h2>
                   </div>
                 </Link>
@@ -128,24 +130,23 @@ export const Client = () => {
                       src="../public/icons/delete-icon.svg"
                       alt="deleted icon"
                     />
-                    <h2 className="p-2">message deleted</h2>{" "}
+                    <h2 className="p-2">message deleted</h2>
                   </div>
                 </Link>
               </div>
             )}
-           <Link to="support">
+            <Link to="support">
               <div className="bg-green-300 justify-start drop-down-style my-1">
                 <img src="../public/icons/support-icon.svg" alt="create icon" />
                 <h2 className="p-2">Support</h2>
               </div>
             </Link>
           </div>
-          
 
           <div className="h-full w-full">
             <Routes>
               <Route path="*" element={<Notfound />} />
-              <Route path="/" element={<Tasks />} />
+              <Route path="/" element={<Tasks  />} />
               <Route path="/m_demandes" element={<Demande_Materiel />} />
               <Route path="/c_demandes" element={<Demande_Conger />} />
               <Route path="createNewEmail" element={<CreateEmail />} />

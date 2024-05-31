@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Materiel_Owner {
-    private int m_id;
+    private long m_id;
     private String name;
     private String categorie;
     private String Date;

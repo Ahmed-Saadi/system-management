@@ -70,7 +70,7 @@ public class MaterielController {
             Materiel_Owner materielOwner = new Materiel_Owner();
             materielOwner.setM_id(material.getM_id());
             if(!material.getOwner().isEmpty()){
-                int user_id  = userMaterialRepo.findUser(material.getM_id());
+                long user_id  = userMaterialRepo.findUser(material.getM_id());
                 Optional<User> user = userRepo.findById(user_id);
                 if(user.isPresent()){
                     Owner owner = createowner(user);
@@ -86,7 +86,7 @@ public class MaterielController {
         return ResponseEntity.ok(materielOwners);
     }
     @DeleteMapping("/del/{id}")
-    public ResponseEntity<String> deletematerial(@PathVariable int id ){
+    public ResponseEntity<String> deletematerial(@PathVariable long id ){
             materialRepo.deleteById(id);
         return ResponseEntity.ok("done");
     }

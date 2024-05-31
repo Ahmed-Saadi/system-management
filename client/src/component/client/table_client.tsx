@@ -4,7 +4,7 @@ import { Demand_congéer, Material_Demand } from "../../models/model";
 interface DataTableProps {
   data: (Material_Demand | Demand_congéer)[];
   columns: string[];
-  handleviewClick: (row: Material_Demand | null) => void;
+  handleviewClick: (arg0: any) => void;
 }
 
 const DataTableClient: React.FC<DataTableProps> = ({
@@ -79,7 +79,7 @@ const DataTableClient: React.FC<DataTableProps> = ({
             return (
               <tr key={rowIndex} className="border flex bg-white">
                 {columns.map((column) => (
-                  <td key={column} className="p-2 truncate truncate-cell  h-12 w-36  ">
+                  <td key={column} className="p-2 truncate   h-12 w-36  ">
                     {row[column.toLowerCase() as keyof typeof row]}
                   </td>
                 ))}

@@ -31,7 +31,7 @@ export const CreateDemande: React.FC<props> = ({ setIsAdd }) => {
   const handleSubmitBtn: SubmitHandler<Material_Demand> = (
     demande: Material_Demand
   ) => {
-    console.log(demande);
+    
     axios
       .post("http://localhost:8081/api/demands/add", demande)
       .then((response) => {

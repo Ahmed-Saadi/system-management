@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Demand_materiel {
     @Id
     @GeneratedValue
-    private int d_id;
+    private long d_id;
     private String name;
     private String categorie;
     private String type;

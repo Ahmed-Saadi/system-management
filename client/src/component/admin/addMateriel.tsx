@@ -45,7 +45,6 @@ export const AddMateriel: React.FC<props> = ({
     }
 
     if (newMaterial.m_id) {
-      console.log("this is the data i have sent : ", newMaterial);
       axios
         .put("http://localhost:8081/api/update", newMaterial)
         .then((response) => {

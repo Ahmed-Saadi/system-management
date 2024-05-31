@@ -67,7 +67,7 @@ public class AccountsController {
 
     }
     @DeleteMapping("/del/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id){
+    public ResponseEntity<String> deleteUser(@PathVariable long id){
         userRepo.deleteById(id);
         return ResponseEntity.ok("hahahah its deleted loool ");
     }

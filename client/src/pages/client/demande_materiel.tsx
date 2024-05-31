@@ -12,7 +12,6 @@ export const Demande_Materiel = () => {
 
   const { demands, setDemands } = useDemandeStore((state: any) => ({
     demands: state.demands,
-    addDemande: state.addDemande,
     setDemands: state.setDemands,
   }));
 
@@ -73,7 +72,7 @@ export const Demande_Materiel = () => {
           />
           {isAdd && <CreateDemande setIsAdd={setIsAdd} />}
         </div>
-        {dataRow && <Demand_row dataRow={dataRow} />}
+        { dataRow && <Demand_row dataRow={dataRow} />}
       </div>
     </>
   );
