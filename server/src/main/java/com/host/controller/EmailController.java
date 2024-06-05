@@ -2,17 +2,14 @@ package com.host.controller;
 
 
 import com.host.Repositories.EmailRepo;
-import com.host.Repositories.FileRepo;
+import com.host.Repositories.EmailFileRepo;
 import com.host.model.Email;
-import com.host.model.File;
-import com.mysql.cj.exceptions.DataReadException;
+import com.host.model.EmailFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Array;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -29,7 +26,7 @@ public class EmailController {
         private EmailRepo emailRepo;
 
         @Autowired
-        private FileRepo fileRepo;
+        private EmailFileRepo emailFileRepo;
 
 
         private static final String UPLOAD_DIR = "uploads/";
@@ -78,7 +75,7 @@ public class EmailController {
                       // Files.write(path, file.getBytes());
 
                        // Create File entity and set file path
-                       File emailFile = new File();
+                       EmailFile emailFile = new EmailFile();
                        emailFile.setFilename(file.getOriginalFilename());
                        emailFile.setEmail(email);
                        emailFile.setFileType(file.getContentType());

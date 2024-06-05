@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Email } from "../../models/model";
 import axios from "axios";
-import { dividerClasses } from "@mui/material";
+
 import { EmailDetail } from "./emailDetail";
 
 export const ReceptionEmails = () => {

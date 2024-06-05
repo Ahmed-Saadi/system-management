@@ -57,3 +57,13 @@ export interface File {
   fileType: string;
   filepath: string;
 }
+
+export interface TaskInterface{
+  id:number;
+  status:string;
+  files:File[];
+  description: string;
+  assignee:string;
+  date:string;
+  title:string;
+}
