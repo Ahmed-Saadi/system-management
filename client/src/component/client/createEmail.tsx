@@ -58,7 +58,7 @@ export const CreateEmail = () => {
       }
       
       const response = await axios.post(
-        "http://localhost:8081/emails/add",
+        "http://localhost:8081/api/emails/add",
         formData,
         {
           headers: {

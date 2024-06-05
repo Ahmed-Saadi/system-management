@@ -66,7 +66,7 @@ export const MessageDeleted = () => {
   };
   const handleBtnDelete = () => {
     axios
-      .post("http://localhost:8081/emails/deleteEmailsforever", emailsToDelete)
+      .post("http://localhost:8081/api/emails/deleteEmailsforever", emailsToDelete)
       .then((response) => {
         const deletedEmailIds = response.data.map((email: Email) => email.id);
         const updatedEmails = emails.filter(
@@ -80,7 +80,7 @@ export const MessageDeleted = () => {
 
   const handleBtnRestore = () => {
     axios
-      .post("http://localhost:8081/emails/restoreEmail", emailsToDelete)
+      .post("http://localhost:8081/api/emails/restoreEmail", emailsToDelete)
       .then((response) => {
         const deletedEmailIds = response.data.map((email: Email) => email.id);
         const updatedEmails = emails.filter(

@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:5173")
-@RequestMapping("/emails")
+@RequestMapping("/api/emails")
 public class EmailController {
 
         @Autowired

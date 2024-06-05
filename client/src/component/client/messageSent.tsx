@@ -18,7 +18,7 @@ export const MessageSent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8081/emails/get")
+      .get("http://localhost:8081/api/emails/get")
       .then((response) => setEmails([...response.data]));
   }, []);
 
@@ -42,7 +42,7 @@ export const MessageSent = () => {
   };
   const handleMakeFavorite = (email: Email) => {
     axios
-      .put(`http://localhost:8081/emails/favorite/${email.id}`)
+      .put(`http://localhost:8081/api/emails/favorite/${email.id}`)
       .then((response) => {
         const updatedEmail = response.data;
         setEmails((prevEmails) =>
@@ -76,7 +76,7 @@ export const MessageSent = () => {
   };
   const handleBtnDelete = () => {
     axios
-      .post("http://localhost:8081/emails/deleteEmails", emailsToDelete)
+      .post("http://localhost:8081/api/emails/deleteEmails", emailsToDelete)
       .then((response) => {
         const deletedEmailIds = response.data.map((email: Email) => email.id);
         const updatedEmails = emails.filter(

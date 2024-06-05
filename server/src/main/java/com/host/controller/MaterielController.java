@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("*")
-@Controller
+@RestController
 @RequestMapping("/api")
 public class MaterielController {
     @Autowired

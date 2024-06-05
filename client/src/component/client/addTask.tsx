@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from "react";
 import { TaskInterface } from "../../models/model";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-import { Tasks } from "../../pages/client/tasks";
 import ModalSuccess from "./ModalSuccess";
 import EmailLoder from "./EmailLoader";
 import axios from "axios";
@@ -20,9 +19,7 @@ export const AddTask: React.FC<props> = ({ setAdd }) => {
   const [files, setFiles] = useState<FileWithId[]>([]);
   const [message, setMessage] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { tasks, setTasks, addTask } = useTaskStore((state: any) => ({
-    tasks: state.tasks,
-    setTasks: state.setTasks,
+  const {addTask } = useTaskStore((state: any) => ({
     addTask: state.addTask,
   }));
 
@@ -67,7 +64,11 @@ export const AddTask: React.FC<props> = ({ setAdd }) => {
           formData.append("files", fileWithId.file)
         );
       }
-      axios.post("http://localhost:8081/api/demands/add");
+      axios
+        .post("http://localhost:8081/api/task/add", formData)
+        .then((response) => {
+          addTask(response.data);
+        });
 
       setMessage("sent");
       setAdd(false);
@@ -77,6 +78,7 @@ export const AddTask: React.FC<props> = ({ setAdd }) => {
       setIsLoading(false);
     }
   };
+  
   return (
     <>
       <div
@@ -134,7 +136,10 @@ export const AddTask: React.FC<props> = ({ setAdd }) => {
             <div className="mt-4 flex flex-col justify-between  items-center mx-4 max-h-72 overflow-y-auto scrollbar">
               {files.length > 0 &&
                 files.map((file) => (
-                  <div className="border p-1 flex justify-between items-center ">
+                  <div
+                    className="border p-1 flex justify-between items-center "
+                    key={file.id}
+                  >
                     <p className="flex-grow mr-6 ">{file.file.name}</p>
                     <button onClick={() => handleFileDelete(file.id)}>
                       <img

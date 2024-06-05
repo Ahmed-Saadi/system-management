@@ -17,14 +17,14 @@ export const Favorite = () => {
   const totalPages = Math.ceil(emails.length / emailsPerPage);
 
   useEffect(() => {
-    axios.get("http://localhost:8081/emails/favorites").then((response) => {
+    axios.get("http://localhost:8081/api/emails/favorites").then((response) => {
       setEmails([...response.data]);
     });
   }, []);
 
   const handleMakeFavorite = (email: Email) => {
     axios
-      .put(`http://localhost:8081/emails/favorite/${email.id}`)
+      .put(`http://localhost:8081/api/emails/favorite/${email.id}`)
       .then((response) => {
         const updatedEmail = response.data;
         setEmails((prevEmails) =>
@@ -70,7 +70,7 @@ export const Favorite = () => {
 
   const handleBtnDelete = () => {
     axios
-      .post("http://localhost:8081/emails/deleteEmails", emailsToDelete)
+      .post("http://localhost:8081/api/emails/deleteEmails", emailsToDelete)
       .then((response) => {
         const deletedEmailIds = response.data.map((email: Email) => email.id);
         const updatedEmails = emails.filter(

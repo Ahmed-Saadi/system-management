@@ -8,19 +8,19 @@ import com.host.model.Task;
 import com.host.model.TaskFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 
 @CrossOrigin("*")
-@Controller
-@RequestMapping("/tasks")
+@RestController
+@RequestMapping("/api/task")
 public class TaskController {
     @Autowired
     private TaskRepo taskRepo;
@@ -31,7 +31,6 @@ public class TaskController {
 
     @PostMapping("/add")
     public Task adddAnewTask(@RequestParam("title") String title,
-                             @RequestParam("status") String status,
                              @RequestParam("description") String description,
                              @RequestParam("assignee") String assignee,
                              @RequestParam( value = "files",required = false) MultipartFile[] files){
@@ -39,9 +38,13 @@ public class TaskController {
         Task task= new Task();
         task.setTitle(title);
         task.setAssignee(assignee);
+        task.setDescription(description);
         task.setStatus("To Do");
         task.setDate(date.toString());
-        for (MultipartFile file : files) {
+        if(files != null){
+
+
+            for (MultipartFile file : files) {
             if (!file.isEmpty()) {
                 Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
                 TaskFile taskFile = new TaskFile();
@@ -52,13 +55,23 @@ public class TaskController {
                 task.getFiles().add(taskFile);
             }
         }
+        }
         taskRepo.save(task);
-
-
-
-
         return task;
     }
 
+    @GetMapping("/get")
+    public List<Task> getTasks(){
+        return taskRepo.findAll();
+    }
 
+    @PostMapping("/updateState")
+    public Task changestatusoftaask(@RequestBody Map<String, Object> payload){
+        Long id = ((Number) payload.get("id")).longValue();
+        String status = (String) payload.get("status");
+        Task task = taskRepo.findById(id).get();
+        task.setStatus(status);
+        taskRepo.save(task);
+        return task;
+    }
 }
