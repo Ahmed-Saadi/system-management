@@ -3,6 +3,7 @@ import { Email } from "../../models/model";
 import axios from "axios";
 
 import { EmailDetail } from "./emailDetail";
+import api from "../../api/api";
 
 export const ReceptionEmails = () => {
   const [emails, setEmails] = useState<Email[]>([]);
@@ -41,8 +42,8 @@ export const ReceptionEmails = () => {
     }
   };
   const handleMakeFavorite = (email: Email) => {
-    axios
-      .put(`http://localhost:8081/api/emails/favorite/${email.id}`)
+    api
+      .put(`/emails/favorite/${email.id}`)
       .then((response) => {
         const updatedEmail = response.data;
         setEmails((prevEmails) =>
@@ -76,8 +77,8 @@ export const ReceptionEmails = () => {
     }
   };
   const handleBtnDelete = () => {
-    axios
-      .post("http://localhost:8081/api/emails/deleteEmails", emailsToDelete)
+    api
+      .post("/emails/deleteEmails", emailsToDelete)
       .then((response) => {
         const deletedEmailIds = response.data.map((email: Email) => email.id);
         const updatedEmails = emails.filter(

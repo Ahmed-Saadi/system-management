@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
 import DataTableClient from "../../component/client/table_client";
-import { Demand_congéer } from "../../models/model";
+import {Demand_conger } from "../../models/model";
 import { Demand_row } from "../../component/client/demand_row";
 import { useDemandeCongéStore } from "../../store/demad_store";
 import { CreateDemandeCongé } from "../../component/client/createDemandeCongé";
 import axios from "axios";
+import api from "../../api/api";
 
 export const Demande_Conger = () => {
   const [isAdd, setIsAdd] = useState<boolean>(false);
-  const [dataRow, setDataRow] = useState<Demand_congéer | null>(null);
+  const [dataRow, setDataRow] = useState<Demand_conger | null>(null);
   const { demands, setDemands } = useDemandeCongéStore((state: any) => ({
     demands: state.demands,
     setDemands: state.setDemands,
   }));
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/api/demands/conger/get")
+    api
+    
+      .get("/demands/conger/get")
       .then((response) => {
         setDemands([...response.data]);
       });
   }, []);
 
-  const handleviewClick = (item: Demand_congéer) => {
+  const handleviewClick = (item: Demand_conger) => {
     setDataRow(item);
   };
 

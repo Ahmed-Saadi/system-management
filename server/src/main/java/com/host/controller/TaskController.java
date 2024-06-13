@@ -30,15 +30,14 @@ public class TaskController {
     private static final String UPLOAD_DIR = "uploads/";
 
     @PostMapping("/add")
-    public Task adddAnewTask(@RequestParam("title") String title,
-                             @RequestParam("description") String description,
-                             @RequestParam("assignee") String assignee,
+    public Task adddAnewTask(@RequestBody Map<String,String> playload ,
                              @RequestParam( value = "files",required = false) MultipartFile[] files){
         Date date = new Date();
         Task task= new Task();
-        task.setTitle(title);
-        task.setAssignee(assignee);
-        task.setDescription(description);
+
+        task.setTitle(playload.get("title"));
+        task.setAssignee(playload.get("assignee"));
+        task.setDescription(playload.get("description"));
         task.setStatus("To Do");
         task.setDate(date.toString());
         if(files != null){

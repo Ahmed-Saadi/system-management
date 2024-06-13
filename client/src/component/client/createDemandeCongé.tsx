@@ -5,6 +5,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
 import { useDemandeCongéStore, useDemandeStore } from "../../store/demad_store";
 import { Demand_congéer } from "../../models/model";
+import api from "../../api/api";
 
 interface props {
   setIsAdd: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,8 +34,8 @@ export const CreateDemandeCongé: React.FC<props> = ({ setIsAdd }) => {
     demande: Demand_congéer
   ) => {
     console.log(demande);
-    axios
-      .post("http://localhost:8081/api/demands/conger/add", demande)
+    api
+      .post("/demands/conger/add", demande)
       .then((response) => {
         addDemande(response.data);
       });

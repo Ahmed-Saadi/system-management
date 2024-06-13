@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import EmailLoder from "./EmailLoader";
 import ModalSuccess from "./ModalSuccess";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/api";
 
 interface FileWithId {
   id: string;
@@ -57,8 +58,8 @@ export const CreateEmail = () => {
         );
       }
       
-      const response = await axios.post(
-        "http://localhost:8081/api/emails/add",
+      const response = await api.post(
+        "/emails/add",
         formData,
         {
           headers: {
@@ -67,7 +68,7 @@ export const CreateEmail = () => {
         }
       );
       setMessage("sent");
-      //navigate("../reception")
+      navigate("../reception")
     } catch (error) {
       setMessage("error");
     } finally {

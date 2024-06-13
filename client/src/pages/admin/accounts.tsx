@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Account, Row } from "../../models/model";
-import axios from "axios";
+import { Account, Material } from "../../models/model";
 import { AddNewAccount } from "../../component/admin/addNewAccount";
 import { AccountDetail } from "../../component/admin/accountDetail";
 import DataTable from "../../component/admin/table_admin";
+import api from "../../api/api";
 
 export const Accounts = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -12,14 +12,14 @@ export const Accounts = () => {
   const [editRowAccount, setEditRowAccount] = useState<Account | null>(null);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/api/user/get")
-      .then((response) => setAccounts([...response.data]));
+    api
+      .get("/user/get")
+      .then((response) => 
+      
+        setAccounts([...response.data]));
   }, []);
 
-  const handleCloseClick = () => {
-    setRowAccount(null);
-  };
+  
 
   const handleClickNewAccount = () => {
     setAddAccount(true);
@@ -33,8 +33,8 @@ export const Accounts = () => {
     }
   };
   const deleteAccount = (id: number) => {
-    axios
-      .delete(`http://localhost:8081/api/user/del/${id}`)
+    api
+      .delete(`/user/del/${id}`)
       .then((response) => {
         console.log(response);
         const newaccounts = accounts.filter((element) => element.u_id !== id);
@@ -60,8 +60,8 @@ export const Accounts = () => {
             data={accounts}
             columns={[
               "u_id",
-              "family_name",
-              "username",
+              "firstname",
+              "lastname",
               "email",
               "phone_number",
               "dob",
@@ -76,7 +76,6 @@ export const Accounts = () => {
         {rowAccount && (
           <AccountDetail
             rowAccount={rowAccount}
-            handleCloseClick={handleCloseClick}
             setEditRowAccount={setEditRowAccount}
             deleteaccount={deleteAccount}
           />
@@ -95,4 +94,3 @@ export const Accounts = () => {
     </>
   );
 };
-

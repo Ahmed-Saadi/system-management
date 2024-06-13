@@ -2,8 +2,6 @@ package com.host.controller;
 
 import com.host.Dto.UserDto;
 import com.host.Repositories.UserRepo;
-import com.host.configuration.Myconfig;
-import com.host.model.Material;
 import com.host.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +19,6 @@ public class AccountsController {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private Myconfig myconfig;
 
 
     @GetMapping("/get")
@@ -33,8 +29,8 @@ public class AccountsController {
     @PostMapping("/add")
     public ResponseEntity<User> adduser(@RequestBody UserDto user){
         User new_user = new User();
-        new_user.setUsername(user.username());
-        new_user.setFamily_name(user.family_name());
+        new_user.setFirstname(user.username());
+        new_user.setLastname(user.family_name());
         new_user.setEmail(user.email());
         new_user.setPassword(user.password());
         new_user.setPhone_number(user.phone_number());
@@ -50,8 +46,8 @@ public class AccountsController {
         Optional<User> existingUserOptional= userRepo.findById(user.u_id());
         if (existingUserOptional.isPresent()) {
             User existingUser=existingUserOptional.get();
-            existingUser.setUsername(user.username());
-            existingUser.setFamily_name(user.family_name());
+            existingUser.setFirstname(user.username());
+            existingUser.setLastname(user.family_name());
             existingUser.setEmail(user.email());
             existingUser.setPassword(user.password());
             existingUser.setPhone_number(user.phone_number());

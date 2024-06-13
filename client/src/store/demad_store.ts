@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { Demand_congéer, Material_Demand } from "../models/model";
 
-// Define the store's state and actions
+
 export const useDemandeStore = create((set) => ({
   demands: [],
   setDemands: (data: Material_Demand[]) => set({ demands: data }),

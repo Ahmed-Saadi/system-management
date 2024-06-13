@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Account, Owner, Row } from "../../models/model";
+import { Account, Owner, Material } from "../../models/model";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AddOwner } from "./addOwner";
-import { ErrorMessage } from "@hookform/error-message";
-import { Materiel } from "../../pages/admin/materiel";
+import api from "../../api/api";
 
 interface props {
-  addMaterial: (status: boolean, material?: Row) => void;
-  modifyRow: Row | null;
-  setModify: React.Dispatch<React.SetStateAction<Row | null>>;
-  setData: React.Dispatch<React.SetStateAction<Row[]>>;
+  addMaterial: (status: boolean, material?: Material) => void;
+  modifyRow: Material | null;
+  setModify: React.Dispatch<React.SetStateAction<Material | null>>;
+  setData: React.Dispatch<React.SetStateAction<Material[]>>;
 }
 const emptyRow = {
   name: "",
@@ -28,7 +27,7 @@ export const AddMateriel: React.FC<props> = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Row>({ defaultValues: modifyRow ? modifyRow : emptyRow });
+  } = useForm<Material>({ defaultValues: modifyRow ? modifyRow : emptyRow });
 
   const [Addowner, setAddOwner] = useState<boolean>(false);
   const [owner, setOwner] = useState<Owner | null>(null);
@@ -39,17 +38,16 @@ export const AddMateriel: React.FC<props> = ({
     }
   }, []);
 
-  const handleSubmitBtn: SubmitHandler<Row> = (newMaterial: Row) => {
+  const handleSubmitBtn: SubmitHandler<Material> = (newMaterial: Material) => {
     if (owner) {
       newMaterial = { ...newMaterial, owner };
     }
 
     if (newMaterial.m_id) {
-      axios
-        .put("http://localhost:8081/api/update", newMaterial)
+      api
+        .put("/update", newMaterial)
         .then((response) => {
-          console.log("this is the data come from the put : ", response.data);
-          setData((prevState: Row[]) => {
+          setData((prevState: Material[]) => {
             const index = prevState.findIndex(
               (row) => row.m_id === newMaterial.m_id
             );
@@ -62,10 +60,10 @@ export const AddMateriel: React.FC<props> = ({
           });
         });
     } else {
-      axios
-        .post("http://localhost:8081/api/add", newMaterial)
+      api
+        .post("/add", newMaterial)
         .then((response) =>
-          setData((prevState: Row[]) => [...prevState, response.data])
+          setData((prevState: Material[]) => [...prevState, response.data])
         );
     }
 

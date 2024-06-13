@@ -6,6 +6,7 @@ import ModalSuccess from "./ModalSuccess";
 import EmailLoder from "./EmailLoader";
 import axios from "axios";
 import { useTaskStore } from "../../store/TaskStore";
+import api from "../../api/api";
 
 interface props {
   setAdd: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +20,7 @@ export const AddTask: React.FC<props> = ({ setAdd }) => {
   const [files, setFiles] = useState<FileWithId[]>([]);
   const [message, setMessage] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {addTask } = useTaskStore((state: any) => ({
+  const { addTask } = useTaskStore((state: any) => ({
     addTask: state.addTask,
   }));
 
@@ -64,12 +65,13 @@ export const AddTask: React.FC<props> = ({ setAdd }) => {
           formData.append("files", fileWithId.file)
         );
       }
-      axios
-        .post("http://localhost:8081/api/task/add", formData)
-        .then((response) => {
-          addTask(response.data);
-        });
 
+      const response = await api.post("/task/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      addTask(response.data);
       setMessage("sent");
       setAdd(false);
     } catch (error) {
@@ -78,7 +80,7 @@ export const AddTask: React.FC<props> = ({ setAdd }) => {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <>
       <div

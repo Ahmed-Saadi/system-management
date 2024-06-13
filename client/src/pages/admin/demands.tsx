@@ -1,42 +1,149 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import DataTable from "../../component/admin/table_admin";
+import { Material_Demand } from "../../models/model";
+import api from "../../api/api";
 
-export const Demande = () => {
-  const data = [
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    { name: "ahmed", username: "saadi" },
-    
-  ];
+export const Demande: React.FC = () => {
+  const [demands, setDemands] = useState<Material_Demand[]>([]);
+  const [showRow, setShowRow] = useState<Material_Demand | null>();
+  const [ismodify, setIsmodify] = useState<boolean>(false);
+
+  useEffect(() => {
+    api.get("/demands/get").then((response) => {
+      console.log(response.data);
+      setDemands(response.data);
+    });
+  }, []);
+
+  const handleSubmitBtn = (e: React.FormEvent<HTMLFormElement>,demande:Material_Demand) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const selectElement = form.querySelector("select");
+    const textareaElement = form.querySelector("textarea");
+
+    if (selectElement && textareaElement) {
+      const status = selectElement.value;
+      const comment = textareaElement.value;
+      const formData = {
+        "id":demande.d_id,
+        "status":status,
+        "comment":comment,
+        
+      }
+      console.log(formData)
+
+      api.post("/demands/material/update",formData).then((response) =>{ 
+        console.log(response.data)
+      })
+      
+      selectElement.value = "accepter";
+      textareaElement.value = "";
+    }
+  };
+
   return (
     <>
-      <div className="flex flex-col items-center w-full bg-first-color p-8">
-        <div className="font-bold text-4xl py-8 bg-white  p-8 rounded-3xl  shadow-md ">
-          <h1>Demandes</h1>
+      <div className="flex  w-full bg-first-color p-8">
+        <div className="flex flex-col items-center justify-start flex-1">
+          <div className="font-bold text-4xl py-6 bg-white   rounded-3xl  shadow-md  w-64 flex items-center justify-center">
+            <h1>Demandes</h1>
+          </div>
+          <div className="flex">
+            <DataTable
+              data={demands}
+              columns={[
+                "D_id",
+                "Name",
+                "Categorie",
+                "Type",
+                "Status",
+                "Description",
+              ]}
+              handleviewClick={setShowRow}
+            />
+          </div>
         </div>
-        <div
-          className="bg-white w-full flex-1 m-12 rounded-3xl shadow-slate-500 shadow-lg grid grid-cols-5 gap-4"
-          style={{ height: "calc(100vh / 3)", padding: "20px" }}
-        >
-          {data.map((item, index) => (
-            <div
-              key={index}
-              className="p-4 bg-green-200 rounded-3xl m-3 flex flex-col justify-center items-center shadow-forth-color shadow-lg font-color font-semibold hover:-translate-y-2"
-            >
-              <h2>{item.name}</h2>
-              <h3>Object :{item.username}</h3>
+        {showRow && (
+          <div className="w-[40%]  flex flex-col justify-start my-24">
+            <div className="bg-white rounded-lg shadow-lg ">
+              <div className="px-4 py-2 border-b flex justify-between items-center">
+                <h2 className="text-xl font-semibold">Demand Details</h2>
+              </div>
+              <div className="p-4">
+                <div className="mb-4 flex justify-between mx-4">
+                  <span className="font-semibold">ID: </span>
+                  <span>{showRow.d_id}</span>
+                </div>
+                <div className="mb-4 flex justify-between mx-4">
+                  <span className="font-semibold">Name: </span>
+                  <span>{showRow.name}</span>
+                </div>
+                <div className="mb-4 flex justify-between mx-4">
+                  <span className="font-semibold">Categorie: </span>
+                  <span>{showRow.categorie}</span>
+                </div>
+                <div className="mb-4 flex justify-between mx-4">
+                  <span className="font-semibold">Descritpion:</span>
+                  <span>{showRow.description ? showRow.description : "-"}</span>
+                </div>
+                <div className="mb-4 flex justify-between mx-4">
+                  <span className="font-semibold">Status: </span>
+                  <span>{showRow.status ? showRow.status : "-"}</span>
+                </div>
+                <div className="mb-4 flex justify-between mx-4">
+                  <span className="font-semibold">Type: </span>
+                  <span>{showRow.type}</span>
+                </div>
+                {showRow.comment && (
+                  <div className="mb-4 flex justify-between mx-4">
+                    <span className="font-semibold">message: </span>
+                    <span>{showRow.comment}</span>
+                  </div>
+                )}
+              </div>
+              {!ismodify && !showRow.comment &&(
+                <div className="mb-4 flex justify-center mx-4 ">
+                  <button
+                    className="bg-blue-500 p-2 rounded text-white"
+                    onClick={() => setIsmodify(true)}
+                  >
+                    repondre
+                  </button>
+                </div>
+              )}
+              {ismodify && (
+                <form
+                  className="flex flex-col w-full items-center"
+                  onSubmit={(e) => handleSubmitBtn(e,showRow)}
+                >
+                  <div>
+                    <select className="w-64 text-lg font-semibold text-center border-2 mb-4 outline-none">
+                      <option value="accepter" defaultValue='true'>
+                        accepter
+                      </option>
+                      <option value="annuler">annuler</option>
+                    </select>
+                  </div>
+                  <div className="w-[70%]  mb-4">
+                    <textarea className="w-full border-2 outline-none resize-none"></textarea>
+                  </div>
+                  <div className="text-md mb-4 text-white flex w-full  justify-center">
+                    <button
+                      type="submit"
+                      className="bg-green-600 mx-12 p-2 rounded-md"
+                    >
+                      valider
+                    </button>
+                    <button className="bg-red-600 p-2 rounded-md">
+                      annuler
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
     </>
   );

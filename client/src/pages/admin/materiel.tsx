@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import { Row } from "../../models/model.ts";
+import { Material } from "../../models/model.ts";
 import axios from "axios";
 import { AddMateriel } from "../../component/admin/addMateriel.tsx";
 import { MaterialDetails } from "../../component/admin/materialDetails.tsx";
 import DataTable from "../../component/admin/table_admin.tsx";
+import api from "../../api/api.ts";
 
 export const Materiel = () => {
-  const [data, setData] = useState<Row[]>([]);
-  const [selectedRow, setSelectedRow] = useState<Row | null>(null);
+  const [data, setData] = useState<Material[]>([]);
+  const [selectedRow, setSelectedRow] = useState<Material | null>(null);
   const [addMateriel, setaddMateriel] = useState<boolean | null>(null);
-  const [modifyRow, setModify] = useState<Row | null>(null);
+  const [modifyRow, setModify] = useState<Material | null>(null);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/api/get")
+   api
+      .get("/get")
       .then((response) => {
         setData([...response.data]);
       })
@@ -26,9 +27,9 @@ export const Materiel = () => {
     setaddMateriel(true);
   };
 
-  function onDelete(index: Row) {
+  function onDelete(index: Material) {
     try {
-      axios.delete(`http://localhost:8081/api/del/${index.m_id}`).then(() => {
+      api.delete(`/del/${index.m_id}`).then(() => {
         setData([...data.filter((i) => i.m_id !== index.m_id)]);
       });
     } catch (e) {
@@ -36,7 +37,7 @@ export const Materiel = () => {
     }
   }
 
-  function handlesaveMaterial(status: boolean, one_row?: Row) {
+  function handlesaveMaterial(status: boolean, one_row?: Material) {
     if (one_row) {
       setData([...data, one_row]);
       setaddMateriel(status);
@@ -45,10 +46,10 @@ export const Materiel = () => {
     }
   }
 
-  const handleModifyClick = (item: Row | null) => {
+  const handleModifyClick = (item: Material | null) => {
     setModify(item);
   };
-  const handleviewClick = (item: Row | null) => {
+  const handleviewClick = (item: Material | null) => {
     setSelectedRow(item);
   };
 
@@ -104,56 +105,3 @@ export const Materiel = () => {
   );
 };
 
-{
-  /*<table className="rounded-xl border-none bg-white shadow-md">
-              <thead>
-                <tr className=" bg-my-blue text-xl border-2">
-                  <th className="colomn_width">Name</th>
-                  <th className="colomn_width">Categorie</th>
-                  <th className="colomn_width">owner</th>
-                  <th className="colomn_width">date d'ajoute</th>
-                  <th className="colomn_width ">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((item) => (
-                  <tr
-                    key={item.m_id}
-                    className="  text-center font-color justify-center border-2 font-semibold shadow-md "
-                  >
-                    <td>{item.name}</td>
-                    <td>{item.categorie}</td>
-                    {item.owner ? (
-                      <td>
-                        {item.owner?.username} {item.owner?.user_family_name}{" "}
-                        {item.owner?.profession}
-                      </td>
-                    ) : (
-                      <td></td>
-                    )}
-                    <td>{item.date}</td>
-                    <td className="flex">
-                      <button
-                        className="material-Row-Btn hover:bg-forth-color"
-                        onClick={() => handleviewClick(item)}
-                      >
-                        <img src="./public/icons/view-icon.svg" />
-                      </button>
-                      <button
-                        className=" material-Row-Btn hover:bg-forth-color"
-                        onClick={() => handleModifyClick(item)}
-                      >
-                        <img src="./public/icons/edit-icon.svg" />
-                      </button>
-                      <button
-                        className="material-Row-Btn hover:bg-forth-color"
-                        onClick={() => onDelete(item)}
-                      >
-                        <img src="./public/icons/delete-icon.svg" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table> */
-}

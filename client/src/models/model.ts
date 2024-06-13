@@ -1,4 +1,4 @@
-export interface Row {
+export interface Material {
   m_id?: number;
   name: string;
   categorie: string;
@@ -8,8 +8,8 @@ export interface Row {
 
 export interface Account {
   u_id?: number;
-  family_name: string;
-  username: string;
+  firstname: string;
+  lastname: string;
   email: string;
   phone_number: string;
   dob: string;
@@ -30,9 +30,10 @@ export interface Material_Demand {
   description: string;
   name: string;
   status: string;
+  comment?:string;
 }
 
-export interface Demand_congéer {
+export interface Demand_conger {
   dc_id: number;
   name: string;
   type: string;
@@ -46,7 +47,7 @@ export interface Email {
   reciver: string;
   subject: string;
   content: string;
-  date:string;
+  date: string;
   favorite: boolean;
   files: File[];
 }
@@ -58,12 +59,29 @@ export interface File {
   filepath: string;
 }
 
-export interface TaskInterface{
-  id:number;
-  status:string;
-  files:File[];
+export interface TaskInterface {
+  id: number;
+  status: string;
+  files: File[];
   description: string;
-  assignee:string;
-  date:string;
-  title:string;
+  assignee: string;
+  date: string;
+  title: string;
+}
+
+export interface RequestTicket {
+  id: number;
+  subject: string;
+  status?: string;
+  type:string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  supportMessagesList?: RequestMessage[];
+  requestMessage:string;
+}
+export interface RequestMessage{
+  id:number;
+  sender?:string;
+  content:string;
+  sentAt:Date;
 }

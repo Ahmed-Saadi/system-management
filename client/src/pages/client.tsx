@@ -32,7 +32,7 @@ export const Client = () => {
         <Header />
         <div className=" flex h-full ">
           <div className="h-full text-center w-60 bg-green-200">
-            <Link to="/">
+            <Link to="">
               <div className="bg-green-300 justify-start drop-down-style my-1">
                 <img src="../public/icons/team-icon.svg" alt="create icon" />
                 <h2 className="p-2">team</h2>
@@ -55,13 +55,13 @@ export const Client = () => {
             </button>
             {isdemands && (
               <div>
-                <Link to="/m_demandes">
+                <Link to="m_demandes">
                   <div className="justify-start drop-down-style">
                     <img src="../public/icons/tool-icon.svg" alt="" />
                     <h2 className="p-2">demands material</h2>
                   </div>
                 </Link>
-                <Link to="/c_demandes">
+                <Link to="c_demandes">
                   <div className="justify-start drop-down-style">
                     <img src="../public/icons/list-icon.svg" alt="" />
                     <h2 className="p-2">demands congées</h2>
@@ -97,14 +97,14 @@ export const Client = () => {
                   </div>
                 </Link>
 
-                <Link to="/reception">
+                <Link to="reception">
                   <div className="justify-start drop-down-style">
                     <img src="../public/icons/list-icon.svg" alt="" />
                     <h2 className="p-2">Reception</h2>
                   </div>
                 </Link>
 
-                <Link to="/favorite">
+                <Link to="favorite">
                   <div className="justify-start drop-down-style">
                     <img
                       src="../public/icons/favorite-icon.svg"
@@ -146,9 +146,9 @@ export const Client = () => {
           <div className="h-full w-full">
             <Routes>
               <Route path="*" element={<Notfound />} />
-              <Route path="/" element={<Tasks  />} />
-              <Route path="/m_demandes" element={<Demande_Materiel />} />
-              <Route path="/c_demandes" element={<Demande_Conger />} />
+              <Route path="home" element={<Tasks  />} />
+              <Route path="m_demandes" element={<Demande_Materiel />} />
+              <Route path="c_demandes" element={<Demande_Conger />} />
               <Route path="createNewEmail" element={<CreateEmail />} />
               <Route path="reception" element={<ReceptionEmails />} />
               <Route path="favorite" element={<Favorite />} />

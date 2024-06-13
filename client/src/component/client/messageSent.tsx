@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Email } from "../../models/model";
 import { dividerClasses } from "@mui/material";
 import { EmailDetail } from "./emailDetail";
+import api from "../../api/api";
 
 export const MessageSent = () => {
   const [emails, setEmails] = useState<Email[]>([]);
@@ -17,8 +18,8 @@ export const MessageSent = () => {
   const [showRow,setSwhoRow] = useState<Email | null>(null)
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/api/emails/get")
+    api
+      .get("/emails/get")
       .then((response) => setEmails([...response.data]));
   }, []);
 
@@ -41,8 +42,8 @@ export const MessageSent = () => {
     }
   };
   const handleMakeFavorite = (email: Email) => {
-    axios
-      .put(`http://localhost:8081/api/emails/favorite/${email.id}`)
+    api
+      .put(`/emails/favorite/${email.id}`)
       .then((response) => {
         const updatedEmail = response.data;
         setEmails((prevEmails) =>
@@ -75,8 +76,8 @@ export const MessageSent = () => {
     }
   };
   const handleBtnDelete = () => {
-    axios
-      .post("http://localhost:8081/api/emails/deleteEmails", emailsToDelete)
+    api
+      .post("/emails/deleteEmails", emailsToDelete)
       .then((response) => {
         const deletedEmailIds = response.data.map((email: Email) => email.id);
         const updatedEmails = emails.filter(

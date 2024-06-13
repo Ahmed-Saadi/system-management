@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Email } from "../../models/model";
 import { EmailDetail } from "./emailDetail";
+import api from "../../api/api";
 
 export const MessageDeleted = () => {
   const [emails, setEmails] = useState<Email[]>([]);
@@ -17,8 +18,8 @@ export const MessageDeleted = () => {
   
  
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/emails/deletedemails")
+    api
+      .get("/emails/deletedemails")
       .then((response) => setEmails([...response.data]));
   }, []);
 
@@ -65,8 +66,8 @@ export const MessageDeleted = () => {
     }
   };
   const handleBtnDelete = () => {
-    axios
-      .post("http://localhost:8081/api/emails/deleteEmailsforever", emailsToDelete)
+    api
+      .post("/emails/deleteEmailsforever", emailsToDelete)
       .then((response) => {
         const deletedEmailIds = response.data.map((email: Email) => email.id);
         const updatedEmails = emails.filter(
@@ -79,8 +80,8 @@ export const MessageDeleted = () => {
   };
 
   const handleBtnRestore = () => {
-    axios
-      .post("http://localhost:8081/api/emails/restoreEmail", emailsToDelete)
+    api
+      .post("/api/emails/restoreEmail", emailsToDelete)
       .then((response) => {
         const deletedEmailIds = response.data.map((email: Email) => email.id);
         const updatedEmails = emails.filter(

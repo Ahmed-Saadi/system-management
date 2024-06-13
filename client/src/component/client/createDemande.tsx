@@ -4,6 +4,7 @@ import { Material_Demand, Row } from "../../models/model";
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
 import { useDemandeStore } from "../../store/demad_store";
+import api from "../../api/api";
 
 interface props {
   setIsAdd: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,8 +33,8 @@ export const CreateDemande: React.FC<props> = ({ setIsAdd }) => {
     demande: Material_Demand
   ) => {
     
-    axios
-      .post("http://localhost:8081/api/demands/add", demande)
+    api
+      .post("/demands/add", demande)
       .then((response) => {
         addDemande(response.data);
       });

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Email } from "../../models/model";
 import { EmailDetail } from "./emailDetail";
+import api from "../../api/api";
 
 export const Favorite = () => {
   const [emails, setEmails] = useState<Email[]>([]);
@@ -17,14 +18,14 @@ export const Favorite = () => {
   const totalPages = Math.ceil(emails.length / emailsPerPage);
 
   useEffect(() => {
-    axios.get("http://localhost:8081/api/emails/favorites").then((response) => {
+    api.get("/emails/favorites").then((response) => {
       setEmails([...response.data]);
     });
   }, []);
 
   const handleMakeFavorite = (email: Email) => {
-    axios
-      .put(`http://localhost:8081/api/emails/favorite/${email.id}`)
+    api
+      .put(`/emails/favorite/${email.id}`)
       .then((response) => {
         const updatedEmail = response.data;
         setEmails((prevEmails) =>
@@ -69,8 +70,8 @@ export const Favorite = () => {
   };
 
   const handleBtnDelete = () => {
-    axios
-      .post("http://localhost:8081/api/emails/deleteEmails", emailsToDelete)
+    api
+      .post("/emails/deleteEmails", emailsToDelete)
       .then((response) => {
         const deletedEmailIds = response.data.map((email: Email) => email.id);
         const updatedEmails = emails.filter(

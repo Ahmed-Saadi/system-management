@@ -132,7 +132,7 @@ public class MaterielController {
     }
 
     private @NotNull Owner createowner(@NotNull Optional<User> user ){
-        return new  Owner(user.get().getU_id(),user.get().getUsername(),user.get().getFamily_name(),user.get().getProfession());
+        return new  Owner(user.get().getU_id(),user.get().getUsername(),user.get().getLastname(),user.get().getProfession());
     }
     private String createDate() throws ParseException {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());

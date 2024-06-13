@@ -3,20 +3,18 @@ import { Account } from "../../models/model";
 
 interface props {
   rowAccount: Account;
-  handleCloseClick(): void;
+  
   setEditRowAccount(data: Account): void;
   deleteaccount(int: number): void;
 }
 
 export const AccountDetail: React.FC<props> = ({
   rowAccount,
-  handleCloseClick,
+  
   setEditRowAccount,
   deleteaccount,
 }) => {
-  const closeTheComponent = () => {
-    handleCloseClick();
-  };
+  
 
   const handleRowDataChange = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,

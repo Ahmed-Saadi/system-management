@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDemandeStore } from "../../store/demad_store";
 import { Material_Demand } from "../../models/model";
 import { Demand_row } from "../../component/client/demand_row";
+import api from "../../api/api";
 
 export const Demande_Materiel = () => {
   const [isAdd, setIsAdd] = useState<boolean>(false);
@@ -16,7 +17,7 @@ export const Demande_Materiel = () => {
   }));
 
   useEffect(() => {
-    axios.get("http://localhost:8081/api/demands/get").then((response) => {
+    api.get("/demands/get").then((response) => {
       console.log(response.data);
       setDemands([...response.data]);
     });

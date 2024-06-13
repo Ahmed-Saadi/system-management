@@ -21,4 +21,5 @@ public class Demand_materiel {
     @Column(length = 65535)
     private String description;
     private String status;
+    private String comment;
 }

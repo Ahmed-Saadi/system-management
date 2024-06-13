@@ -1,9 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Client } from "../../pages/client";
-import { Demands } from "../../pages/client/demands";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Header = () => {
+  const navigate = useNavigate()
+  const logout = () => { 
+    localStorage.removeItem("token")
+    localStorage.removeItem("role")
+    navigate("/login")
+  }
   return (
     <>
       <div className="flex h-[50px] bg-red-200 ">
@@ -34,7 +37,7 @@ export const Header = () => {
             <p className="h-[40px]  text-lg w-full hover:bg-red-700 cursor-pointer ">
               Profile
             </p>
-            <p className="h-[40px]  text-lg w-full hover:bg-red-700 cursor-pointer ">
+            <p className="h-[40px]  text-lg w-full hover:bg-red-700 cursor-pointer " onClick={logout}>
               Log Out
             </p>
           </div>

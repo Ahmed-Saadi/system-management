@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:5173")
@@ -42,6 +44,17 @@ public class DemandeController {
     public ResponseEntity<Demande_Congé> addANewDemandCongé(@RequestBody Demande_Congé demandeCongé){
         Demande_Congé demandeCongé1 = demandeCongéRepo.save(demandeCongé);
         return ResponseEntity.ok(demandeCongé1);
+    }
+    @PostMapping("/material/update")
+    public Demand_materiel updatethedemandematerial(@RequestBody Map<String, Object> payload){
+        long id = ((Number) payload.get("id")).longValue();
+        Optional<Demand_materiel> demandMateriel = demandeMaterialRepo.findById(id);
+        if(demandMateriel.isPresent()){
+            demandMateriel.get().setStatus("closed");
+            demandMateriel.get().setComment((String)  payload.get("comment"));
+            demandeMaterialRepo.save(demandMateriel.get());
+        }
+        return demandMateriel.get();
     }
 
 

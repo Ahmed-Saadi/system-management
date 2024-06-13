@@ -1,8 +1,9 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+
+import React from "react";
 import { Account } from "../../models/model.ts";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
+import api from "../../api/api.ts";
 
 const default_value_account = {
   user_family_name: "",
@@ -37,8 +38,8 @@ export const AddNewAccount: React.FC<props> = ({
   };
   const handleSubmitButton: SubmitHandler<Account> = (newAccount: Account) => {
     if (newAccount.u_id) {
-      axios
-        .put(`http://localhost:8081/api/user/edit`, newAccount)
+      api
+        .put(`/user/edit`, newAccount)
         .then((response) => {
           setAccounts((prevState: Account[]) => {
             const index = prevState.findIndex(
@@ -54,8 +55,8 @@ export const AddNewAccount: React.FC<props> = ({
           handleAccount(false, newAccount);
         });
     } else {
-      axios
-        .post("http://localhost:8081/api/user/add", newAccount)
+      api
+        .post("/user/add", newAccount)
         .then((response) => {
           setAccounts((prevState: Account[]) => [...prevState, response.data]);
           console.log("post likhdmat");

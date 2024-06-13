@@ -1,30 +1,40 @@
+import React, { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Login from "./pages/login";
+import { Admin } from "./pages/Admin";
+import { Client } from "./pages/client";
+import { AuthProvider, useAuth } from "./auth/auth";
+import ProtectedRoute from "./auth/protectedRoute";
+import { Notfound } from "./pages/notfound";
 import "./App.css";
 
-import { Login } from "./pages/login";
+const AppRoutes: React.FC = () => {
+ 
 
-import { useState } from "react";
-import { Admin } from "./pages/Admin.tsx";
-import { Client } from "./pages/client.tsx";
-
-function App() {
-  const [status, setstatus] = useState<boolean>(true);
-  const [position, setposition] = useState<string>("client");
-
-  const logout = () => {
-    setstatus(false);
-  };
+ 
 
   return (
-    <>
-      {status && position === "admin" ? (
-        <Admin logout={logout} />
-      ) : status && position === "client" ? (
-        <Client />
-      ) : (
-        <Login />
-      )}
-    </>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/user/*"
+        element={<ProtectedRoute element={<Client />} role="user" />}
+      />
+      <Route
+        path="/admin/*"
+        element={<ProtectedRoute element={<Admin />} role="admin" />}
+      />
+      <Route path="/notfound" element={<Notfound />} />
+    </Routes>
   );
-}
+};
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
+  );
+};
 
 export default App;

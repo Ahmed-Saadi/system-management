@@ -1,11 +1,11 @@
 import React from "react";
-import { Row } from "../../models/model";
+import { Material } from "../../models/model";
 
 interface props {
-  selectedRow: Row;
-  handleModifyClick: (item: Row | null) => void;
-  onDelete: (index: Row) => void;
-  setSelectedRow:React.Dispatch<React.SetStateAction<Row | null>>;
+  selectedRow: Material;
+  handleModifyClick: (item: Material | null) => void;
+  onDelete: (index: Material) => void;
+  setSelectedRow:React.Dispatch<React.SetStateAction<Material | null>>;
   
 }
 export const MaterialDetails: React.FC<props> = ({
@@ -32,11 +32,13 @@ export const MaterialDetails: React.FC<props> = ({
           </span>
           <span className="flex items-center font-semibold my-2 mx-4 justify-between p-2 bg-[#F5F5F5] ">
             <p className="px-2">Owner : </p>
-            <p className="px-2 ">
+            {
+              selectedRow.owner != null ? <p className="px-2 ">
               {selectedRow.owner?.username}
               {selectedRow.owner?.family_name}
               {selectedRow.owner?.profession}
-            </p>
+            </p>:"-"
+            }
           </span>
           <span className="flex items-center font-semibold my-2 mx-4 justify-between p-2 bg-[#F5F5F5] ">
             <p className="px-2">Date d'ajoute : </p>

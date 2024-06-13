@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Account, Row } from "../../models/model";
+import { Account, Material, Material_Demand } from "../../models/model";
 
 interface DataTableProps {
-  data: (Row | Account)[];
+  data: (Material | Account | Material_Demand)[];
   columns: string[];
   handleviewClick: (item: any) => void;
 }
@@ -61,8 +61,8 @@ const DataTable: React.FC<DataTableProps> = ({
   const paginatedData = data.slice(startRow, startRow + rowsPerPage);
 
   return (
-    <div className="p-4">
-      <table className="min-w-full border-collapse block overflow-y-auto max-h-[600px] overflow-x-hidden  ">
+    <div className="p-4 h-full">
+      <table className="min-w-full border-collapse block overflow-y-auto  overflow-x-hidden  ">
         <thead className=" sticky inset-y-0 text-md">
           <tr className="border flex ">
             {columns.map((column) => {
@@ -96,26 +96,27 @@ const DataTable: React.FC<DataTableProps> = ({
             return (
               <tr key={rowIndex} className="border flex ">
                 {columns.map((column) => {
+                  column = column.toLowerCase();
                   if (column === "owner") {
                     return (
                       <td
                         key={column}
-                        className="px-1  py-2 flex justify-evenly w-52 "
+                        className="px-1  py-2 flex justify-evenly w-52 truncate"
                       >
-                        <p>{(row as Row).owner?.username}</p>
-                        <p>{(row as Row).owner?.family_name}</p>
-                        <p>{(row as Row).owner?.profession}</p>
+                        <p>{(row as Material).owner?.username}</p>
+                        <p>{(row as Material).owner?.family_name}</p>
+                        <p>{(row as Material).owner?.profession}</p>
                       </td>
                     );
                   } else if (column === "email" || column === "date") {
                     return (
-                      <td key={column} className="px-1  py-2 w-52  ">
+                      <td key={column} className="  py-2 w-52 px-2  truncate ">
                         {row[column as keyof typeof row]}
                       </td>
                     );
                   } else {
                     return (
-                      <td key={column} className="px-1  py-2 table-size  ">
+                      <td key={column} className="px-1  py-2 table-size  truncate">
                         {row[column as keyof typeof row]}
                       </td>
                     );
@@ -143,8 +144,7 @@ const DataTable: React.FC<DataTableProps> = ({
           <select onChange={(e) => setRowPerPage(parseInt(e.target.value))}>
             <option value="5">5</option>
             <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
+            <option value="15">15</option>
           </select>
           <button
             className="px-3 py-1 border rounded mx-1"

@@ -6,6 +6,7 @@ import { AddTask } from "../../component/client/addTask";
 import { useTaskStore } from "../../store/TaskStore";
 import axios from "axios";
 import { ShowTaskRow } from "../../component/client/showtaskrow";
+import api from "../../api/api";
 
 interface TaskProps {
   task: TaskInterface;
@@ -30,14 +31,14 @@ export const Tasks: React.FC = () => {
   const [showTask,setShowTask]=useState<TaskInterface | null >(null)
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/api/task/get")
+    api
+      .get("/task/get")
       .then((response) => setTasks(response.data));
   }, []);
 
   const moveTask = (id: number, status: string) => {
-   axios
-      .post("http://localhost:8081/api/task/updateState", { id, status })
+   api
+      .post("/task/updateState", { id, status })
       .then((response) => {
         console.log(response.data)
         updateTaskStatus(id, status);

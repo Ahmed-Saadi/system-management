@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Account, Owner } from "../../models/model";
 import { Value } from "react-phone-number-input/core";
+import api from "../../api/api";
 
 interface props {
   setOwner: React.Dispatch<React.SetStateAction<Owner | null>>;
@@ -11,7 +12,7 @@ export const AddOwner: React.FC<props> = ({ setOwner, setAddowner }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [filterAccounts, setFilteredAccounts] = useState<Account[]>([]);
   useEffect(() => {
-    axios.get("http://localhost:8081/api/user/get").then((response) => {
+    api.get("/user/get").then((response) => {
       setAccounts([...response.data]);
       setFilteredAccounts([...response.data]);
     });
