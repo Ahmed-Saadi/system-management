@@ -51,12 +51,16 @@ export const CreateEmail = () => {
       const formData = new FormData();
       formData.append("subject", email.subject);
       formData.append("content", email.content);
-      formData.append("reciver", email.reciver);
+      formData.append("receiver", email.reciver);
       if (files) {
         files.forEach((fileWithId) =>
           formData.append("files", fileWithId.file)
         );
       }
+      console.log("sh=ubject",formData.get("subject"))
+      console.log("content",formData.get("content"))
+      console.log(formData.get("receiver"))
+      console.log(formData.get("files"))
       
       const response = await api.post(
         "/emails/add",

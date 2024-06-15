@@ -18,29 +18,27 @@ interface ColumnProps {
   tasks: TaskInterface[];
   moveTask: (id: number, status: string) => void;
   setAdd: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowTask:React.Dispatch<React.SetStateAction<TaskInterface | null>>;
+  setShowTask: React.Dispatch<React.SetStateAction<TaskInterface | null>>;
 }
 
 export const Tasks: React.FC = () => {
-  const { tasks, setTasks, updateTaskStatus} = useTaskStore((state: any) => ({
+  const { tasks, setTasks, updateTaskStatus } = useTaskStore((state: any) => ({
     tasks: state.tasks,
     setTasks: state.setTasks,
-    updateTaskStatus:state. updateTaskStatus,
+    updateTaskStatus: state.updateTaskStatus,
   }));
   const [add, setAdd] = useState<boolean>(false);
-  const [showTask,setShowTask]=useState<TaskInterface | null >(null)
+  const [showTask, setShowTask] = useState<TaskInterface | null>(null);
 
   useEffect(() => {
-    api
-      .get("/task/get")
-      .then((response) => setTasks(response.data));
+    api.get("/task/get").then((response) => setTasks(response.data));
   }, []);
 
   const moveTask = (id: number, status: string) => {
-   api
+    api
       .post("/task/updateState", { id, status })
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         updateTaskStatus(id, status);
       })
       .catch((error) => {
@@ -49,9 +47,9 @@ export const Tasks: React.FC = () => {
   };
 
   const tasksByStatus = (status: string) =>
-    tasks.filter((task:TaskInterface) => task.status === status);
+    tasks.filter((task: TaskInterface) => task.status === status);
 
-  console.log(showTask)
+  console.log(showTask);
   return (
     <>
       <DndProvider backend={HTML5Backend}>
@@ -86,7 +84,9 @@ export const Tasks: React.FC = () => {
         </div>
       </DndProvider>
       {add && <AddTask setAdd={setAdd} />}
-      {showTask && <ShowTaskRow  showTask={showTask} setShowTask={setShowTask} />}
+      {showTask && (
+        <ShowTaskRow showTask={showTask} setShowTask={setShowTask} />
+      )}
     </>
   );
 };
@@ -94,7 +94,7 @@ export const Tasks: React.FC = () => {
 const Task: React.FC<TaskProps> = ({ task }) => {
   const [{ isDragging }, drag] = useDrag({
     type: "Task",
-    item: { id:task.id },
+    item: { id: task.id },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -112,7 +112,13 @@ const Task: React.FC<TaskProps> = ({ task }) => {
   );
 };
 
-const Column: React.FC<ColumnProps> = ({ status, tasks, moveTask, setAdd ,setShowTask}) => {
+const Column: React.FC<ColumnProps> = ({
+  status,
+  tasks,
+  moveTask,
+  setAdd,
+  setShowTask,
+}) => {
   const [, drop] = useDrop({
     accept: "Task",
     drop: (item: { id: number }) => moveTask(item.id, status),
@@ -136,9 +142,10 @@ const Column: React.FC<ColumnProps> = ({ status, tasks, moveTask, setAdd ,setSho
         )}
       </div>
       {tasks.map((task) => (
-        <div onClick={()=> setShowTask(task)} className="hover"><Task key={task.id} task={task} moveTask={moveTask} /></div>
+        <div onClick={() => setShowTask(task)} className="hover">
+          <Task key={task.id} task={task} moveTask={moveTask} />
+        </div>
       ))}
     </div>
-    
   );
 };

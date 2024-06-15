@@ -1,10 +1,10 @@
 package com.host.auth;
 
 
-import com.host.Repositories.UserRepo;
+import com.host.accounts.UserRepo;
 import com.host.config.JwtService;
-import com.host.model.Role;
-import com.host.model.User;
+import com.host.accounts.Role;
+import com.host.accounts.User;
 import lombok.RequiredArgsConstructor;
 
 
@@ -14,8 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.mail.AuthenticationFailedException;
 
 
 @Service

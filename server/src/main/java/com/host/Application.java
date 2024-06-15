@@ -1,8 +1,8 @@
 package com.host;
 
-import com.host.Repositories.UserRepo;
-import com.host.model.Role;
-import com.host.model.User;
+import com.host.accounts.UserRepo;
+import com.host.accounts.Role;
+import com.host.accounts.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

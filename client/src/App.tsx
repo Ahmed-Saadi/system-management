@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Login from "./pages/login";
 import { Admin } from "./pages/Admin";
 import { Client } from "./pages/client";
@@ -15,6 +15,7 @@ const AppRoutes: React.FC = () => {
 
   return (
     <Routes>
+       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route
         path="/user/*"

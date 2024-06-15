@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (savedPathname) {
         navigate(savedPathname);
       } else {
-        navigate(role === "admin" ? "/admin/dashboard" : "/user/home");
+        navigate(role === "admin" ? "/admin/dashboard" : "/user");
       }
     } else {
       navigate("/login");
@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     setIsAuthenticated(true);
     setUserRole(role);
-    navigate(role === "admin" ? "/admin/dashboard" : "/user/home");
+    navigate(role === "admin" ? "/admin/dashboard" : "/user");
   };
 
   const logout = () => {

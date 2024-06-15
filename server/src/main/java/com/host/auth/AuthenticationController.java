@@ -1,7 +1,7 @@
 package com.host.auth;
 
-import com.host.Repositories.UserRepo;
-import com.host.model.User;
+import com.host.accounts.UserRepo;
+import com.host.accounts.User;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.mail.AuthenticationFailedException;
 
 @RestController
 @CrossOrigin("*")
@@ -38,10 +36,8 @@ public class AuthenticationController {
         public String checktheprivilegeoftheuser(){
          Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
          String username = authentication.getName();
-         System.out.println(username);
-         User user = userRepo.findByEmail(username).get();
-         System.out.println(user.getRole());
-            if(user.getRole().name().equals("ADMIN") ){
+                 User user = userRepo.findByEmail(username).get();
+                    if(user.getRole().name().equals("ADMIN") ){
                 return "admin";
             }else {
                 return "user";

@@ -5,7 +5,7 @@ export const Header = () => {
   const logout = () => { 
     localStorage.removeItem("token")
     localStorage.removeItem("role")
-    navigate("/login")
+    return navigate("/", { replace: true });
   }
   return (
     <>

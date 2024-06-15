@@ -146,7 +146,7 @@ export const Client = () => {
           <div className="h-full w-full">
             <Routes>
               <Route path="*" element={<Notfound />} />
-              <Route path="home" element={<Tasks  />} />
+              <Route path="" element={<Tasks  />} />
               <Route path="m_demandes" element={<Demande_Materiel />} />
               <Route path="c_demandes" element={<Demande_Conger />} />
               <Route path="createNewEmail" element={<CreateEmail />} />

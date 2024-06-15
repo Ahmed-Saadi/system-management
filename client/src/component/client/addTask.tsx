@@ -60,17 +60,20 @@ export const AddTask: React.FC<props> = ({ setAdd }) => {
       formData.append("title", task.title);
       formData.append("description", task.description);
       formData.append("assignee", task.assignee);
+
       if (files) {
         files.forEach((fileWithId) =>
           formData.append("files", fileWithId.file)
         );
       }
-
+      console.log(formData.get('files'))
       const response = await api.post("/task/add", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+
+
       addTask(response.data);
       setMessage("sent");
       setAdd(false);
@@ -80,7 +83,6 @@ export const AddTask: React.FC<props> = ({ setAdd }) => {
       setIsLoading(false);
     }
   };
-
   return (
     <>
       <div
