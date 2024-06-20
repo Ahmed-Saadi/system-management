@@ -11,18 +11,26 @@ export const EmailDetail: React.FC<Props> = ({ email ,close}) => {
   return (
     <div className="fixed z-50 top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
       <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6 mx-4 relative">
-        <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onClick={() => close(null)}>
+        <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-lg w-8 h-8 " onClick={() => close(null)}>
           &times;
         </button>
         <h2 className="text-2xl font-semibold mb-4">{email.subject}</h2>
-        <div className="flex items-center mb-4">
+        <div className="flex items-center mb-4 ">
           <div className="flex-shrink-0 w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center">
-            {email.reciver.charAt(0).toUpperCase()}
+            {email.receiver.email.charAt(0).toUpperCase()}
           </div>
+          <div className='flex flex-col'>
           <div className="ml-4">
-            <p className="text-sm font-medium text-gray-900">{email.reciver}</p>
+            <p className="text-sm font-medium text-gray-900">{email.receiver.email}</p>
             <p className="text-sm text-gray-500">{email.date}</p>
           </div>
+          <div className="ml-4">
+          <p className="text-sm font-medium text-gray-900">envoyé par : </p>
+            <p className="text-sm font-medium text-gray-900">{email.sender.email}</p>
+            
+          </div>
+          </div>
+
         </div>
         <div className="overflow-y-auto max-h-80 mb-4">
           <p className="text-gray-700 whitespace-pre-wrap">{email.content}</p>

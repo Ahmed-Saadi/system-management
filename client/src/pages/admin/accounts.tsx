@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Account, Material } from "../../models/model";
+import { Account } from "../../models/model";
 import { AddNewAccount } from "../../component/admin/addNewAccount";
 import { AccountDetail } from "../../component/admin/accountDetail";
 import DataTable from "../../component/admin/table_admin";
@@ -12,14 +12,8 @@ export const Accounts = () => {
   const [editRowAccount, setEditRowAccount] = useState<Account | null>(null);
 
   useEffect(() => {
-    api
-      .get("/user/get")
-      .then((response) => 
-      
-        setAccounts([...response.data]));
+    api.get("/user/get").then((response) => setAccounts([...response.data]));
   }, []);
-
-  
 
   const handleClickNewAccount = () => {
     setAddAccount(true);
@@ -32,26 +26,25 @@ export const Accounts = () => {
       setRowAccount(account);
     }
   };
+
   const deleteAccount = (id: number) => {
-    api
-      .delete(`/user/del/${id}`)
-      .then((response) => {
-        console.log(response);
-        const newaccounts = accounts.filter((element) => element.u_id !== id);
-        setAccounts([...newaccounts]);
-        setRowAccount(null);
-      });
+    api.delete(`/user/del/${id}`).then((response) => {
+      console.log(response);
+      const newaccounts = accounts.filter((element) => element.u_id !== id);
+      setAccounts([...newaccounts]);
+      setRowAccount(null);
+    });
   };
 
   return (
     <>
-      <div className="flex  flex-grow  items-start bg-first-color  font-color w-full">
-        <div className="flex items-center  flex-col my-4 ">
-          <h1 className=" font-bold text-4xl py-4 bg-white  p-6 rounded-3xl  shadow-md">
+      <div className="flex flex-grow items-start bg-first-color text-font-color w-full">
+        <div className="flex items-center flex-col my-4">
+          <h1 className="font-bold text-4xl py-4 bg-white p-6 rounded-3xl shadow-lg">
             List of Accounts
           </h1>
           <button
-            className="rounded-3xl font-bold w-40 h-8 p-1 m-8 bg-second-color shadow hover:bg-forth-color self-end mr-44"
+            className="rounded-3xl font-bold w-40 h-8 p-1 m-8 bg-second-color shadow-md hover:bg-forth-color self-end mr-44"
             onClick={handleClickNewAccount}
           >
             Add Account
@@ -71,8 +64,6 @@ export const Accounts = () => {
             handleviewClick={setRowAccount}
           />
         </div>
-        {/*-------------show a row of data-------------- */}
-
         {rowAccount && (
           <AccountDetail
             rowAccount={rowAccount}
@@ -80,9 +71,6 @@ export const Accounts = () => {
             deleteaccount={deleteAccount}
           />
         )}
-
-        {/*------------- add an account-----------------*/}
-
         {(addAccount || editRowAccount) && (
           <AddNewAccount
             handleAccount={handleAccount}

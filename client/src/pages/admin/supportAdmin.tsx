@@ -5,22 +5,35 @@ import axios from "axios";
 // Import your models here
 import { RequestTicket } from "../../models/model";
 import api from "../../api/api";
+import { useAccountStore } from "../../store/profileStore";
 
 export const Support = () => {
   const [requests, setRequests] = useState<RequestTicket[]>([]);
   const [showRequest, setShowRequest] = useState<RequestTicket | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { setAccount, account } = useAccountStore((state: any) => ({
+    account: state.account,
+    setAccount: state.setAccount,
+  }));
+
 
   useEffect(() => {
-    api.get("/support/get").then((response) => {
+    api.get("/support/getsupportTockets").then((response) => {
       const sortedRequests = response.data.sort(
         (a: any, b: any) =>
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
       setRequests(sortedRequests);
+      
     });
   }, []);
+  useEffect(()=>{
+    api.post("/v1/auth/checkprivilege").then((response) => {
+      console.log(response.data)
+      setAccount(response.data);
+    });
+  },[showRequest])
 
   
   const handleClickEvent = (req: RequestTicket) => {
@@ -30,7 +43,7 @@ export const Support = () => {
   const handleClickBtnSendMessage = (request: RequestTicket) => {
     const message = document.getElementById("message") as HTMLTextAreaElement;
     if (message.value.trim().length > 0) {
-      const updatedRequest = { ...request, requestMessage: message.value };
+      const updatedRequest = { ...request, requestMessage: message.value,sender:account };
 
       api
         .post("/support/update", updatedRequest)
@@ -94,14 +107,21 @@ export const Support = () => {
                   </div>
                   <div className="bg-white p-4 shadow-inner rounded-lg h-[500px] overflow-y-auto flex-col flex">
                     {showRequest.supportMessagesList?.map((message) => (
-                      <div className="mx-4 flex flex-col " key={message.id}>
-                        <p className="text-xs p-1  self-end">
-                          {new Date(message.sentAt).toLocaleString()}
-                        </p>
-                        <div className="bg-green-100 p-2 rounded-md">
-                          {message.content}
-                        </div>
-                      </div>
+                        message.sender?.u_id === account.u_id ? (<div className="mx-4 flex flex-col" key={message.id}>
+                          <p className="text-xs p-1 self-end">
+                            {new Date(message.sentAt).toLocaleString()}
+                          </p>
+                          <div className="bg-green-100 p-2 rounded-md">
+                            {message.content}
+                          </div>
+                        </div>):(<div className="mx-4 flex flex-col" key={message.id}>
+                          <p className="text-xs p-1 self-start">
+                            {new Date(message.sentAt).toLocaleString()}
+                          </p>
+                          <div className="bg-blue-100 p-2 rounded-md">
+                            {message.content}
+                          </div>
+                        </div>)
                     ))}
                     <div ref={messagesEndRef} />
                   </div>

@@ -4,6 +4,7 @@ package com.host.email;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.host.accounts.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,10 @@ public class Email {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String reciver;
+    @OneToOne
+    private User receiver;
+    @OneToOne
+    private User sender;
     private String subject;
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
@@ -31,7 +35,9 @@ public class Email {
 
 
     @OneToMany(mappedBy = "email", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("emailFileRefrence")
     private List<EmailFile> files = new ArrayList<>();
+
+
 
 }

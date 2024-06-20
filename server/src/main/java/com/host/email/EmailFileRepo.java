@@ -8,5 +8,5 @@ import java.util.List;
 
 
 public interface EmailFileRepo extends JpaRepository<EmailFile, Long> {
-    public List<EmailFile> findFileByEmailId(long id);
+    List<EmailFile> findFileByEmailId(long id);
 }

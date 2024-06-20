@@ -1,5 +1,6 @@
 package com.host.support;
 
+import com.host.accounts.User;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class SupportCreateDto {
     private String subject;
     private String type;
     private String requestMessage;
+    private User sender = new User();
 }

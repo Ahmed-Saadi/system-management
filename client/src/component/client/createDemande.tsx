@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
-import { Material_Demand, Row } from "../../models/model";
+import { Material, Material_Demand } from "../../models/model";
 import { ErrorMessage } from "@hookform/error-message";
-import axios from "axios";
 import { useDemandeStore } from "../../store/demad_store";
 import api from "../../api/api";
 
-interface props {
+interface Props {
   setIsAdd: React.Dispatch<React.SetStateAction<boolean>>;
+  setFilterData: React.Dispatch<React.SetStateAction<Material_Demand[]>>;
 }
 
-export const CreateDemande: React.FC<props> = ({ setIsAdd }) => {
+export const CreateDemande: React.FC<Props> = ({ setIsAdd, setFilterData }) => {
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<Material_Demand>({});
+
+  const [ownerMaterials, setOwnerMaterials] = useState<Material[]>([]);
+  const [isListVisible, setIsListVisible] = useState(true);
+  const [selectedName, setSelectedName] = useState("");
 
   const { addDemande } = useDemandeStore((state: any) => ({
     addDemande: state.addDemande,
@@ -27,135 +32,172 @@ export const CreateDemande: React.FC<props> = ({ setIsAdd }) => {
     name: "type",
   });
 
-  useEffect(() => {}, [typeValue]);
+  useEffect(() => {
+    fetchOwnerMaterials();
+  }, [typeValue]);
 
-  const handleSubmitBtn: SubmitHandler<Material_Demand> = (
-    demande: Material_Demand
-  ) => {
-    
-    api
-      .post("/demands/add", demande)
-      .then((response) => {
-        addDemande(response.data);
-      });
+  const fetchOwnerMaterials = () => {
+    api.get("/getownerMAterials").then((response) => 
+     setOwnerMaterials(response.data)
+      
+    );
+  };
+
+  const handleSubmitBtn: SubmitHandler<Material_Demand> = (demande) => {
+    api.post("/demandsMaterial/add", demande).then((response) => {
+      addDemande(response.data);
+      setFilterData((prevState) => [...prevState, response.data]);
+    });
     setIsAdd(false);
   };
 
+  const handleItemClick = (name?: string) => {
+    setSelectedName(name ? name : "");
+    setValue("name", name ? name : "");
+    setIsListVisible(!isListVisible);
+  };
+
   return (
-    <>
-      <div
-        className="fixed inset-0 flex justify-end "
-        onClick={() => setIsAdd(false)}
-      >
-        <div
-          className="bg-[#FAFAFA] w-[500px] flex flex-col items-center font-color"
-          onClick={(event) => event.stopPropagation()}
-        >
+    <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 z-50">
+      <div className="bg-white w-full md:w-[700px] mx-4 my-8 rounded-lg shadow-lg">
+        <div className="flex justify-between items-center bg-blue-500 text-white py-4 px-6 rounded-t-lg">
+          <h2 className="text-xl font-semibold">Add a New Demand</h2>
           <button
             onClick={() => setIsAdd(false)}
-            className="bg-white shadow inline-block hover:bg-gray-300 self-start"
+            className="text-white hover:text-gray-200 focus:outline-none"
           >
-            <img src="../public/icons/double-arrow-icon.svg" alt="" />
+            <img src="/icons/close-icon.svg" alt="Close" className="w-6 h-6" />
           </button>
-          <h2 className="p-2 m-2 bg-first-color shadow w-3/4 self-center text-center rounded-lg text-2xl">
-            add a new demande :
-          </h2>
-
-          <form
-            className="flex flex-col justify-center  m-2 mt-8 bg-first-color p-8 w-full text-xl "
-            onSubmit={handleSubmit(handleSubmitBtn)}
-          >
-            <div className="mt-4 mb-2 justify-between flex">
-              <label className="mr-4">Type demande : </label>
+        </div>
+        <div className="p-6">
+          <form onSubmit={handleSubmit(handleSubmitBtn)}>
+            <div className="mb-4">
+              <label htmlFor="type" className="block font-semibold mb-2">
+                Type de demande:
+              </label>
               <select
-                className="flex-1 shadow-xl px-2 rounded-xl"
+                id="type"
+                className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
                 {...register("type", {
-                  required: "please select a the type",
+                  required: "Please select the type",
                 })}
               >
-                <option value="">Select a type </option>
+                <option value="">Select a type</option>
                 <option value="reparation">Reparation</option>
                 <option value="nouveau">Nouveau</option>
               </select>
+              <ErrorMessage
+                errors={errors}
+                name="type"
+                render={({ message }) => (
+                  <p className="text-red-500 mt-1">{message}</p>
+                )}
+              />
             </div>
-            <ErrorMessage
-              errors={errors}
-              name="type"
-              render={({ message }) => (
-                <p className=" mx-0 mb-2 ml-40 error-message">{message}</p>
-              )}
-            />
 
-            {/*typeValue === "reparation" && (
-              <>
-                <div className="flex flex-col h-120 aut">
-                  {materials.map((material) => (
-                    <div>{material.name}</div>
-                  ))}
-                </div>
-              </>
-            )*/}
-            {typeValue === "nouveau" && (
-              <>
-                <div className="mt-4 mb-2 justify-between flex ">
-                  <label className="mr-24">Name :</label>
+            {typeValue === "reparation" && (
+              <div className="mb-4">
+                <label className="block font-semibold mb-2">Material Name:</label>
+                <div className="relative">
                   <input
                     type="text"
-                    className=" flex-1 shadow-xl px-2 rounded-xl"
-                    {...register("name", { required: "Enter the categorie" })}
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
+                    readOnly={!isListVisible}
+                    onClick={() => setIsListVisible(!isListVisible)}
+                    value={selectedName}
+                    {...register("name", { required: "Enter the material name" })}
                   />
+                  {isListVisible && (
+                    <ul className="absolute left-0 right-0 mt-1 bg-white border rounded-lg shadow-sm z-10">
+                      {ownerMaterials.map((material) => (
+                        <li
+                          key={material.m_id}
+                          className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                          onClick={() => handleItemClick(material.name)}
+                        >
+                          {material.name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
                 <ErrorMessage
                   errors={errors}
-                  name="categorie"
+                  name="name"
                   render={({ message }) => (
-                    <p className=" mx-0 mb-2 ml-40 error-message">{message}</p>
+                    <p className="text-red-500 mt-1">{message}</p>
                   )}
                 />
-              </>
+              </div>
             )}
 
-            <div className="mt-4 mb-2 justify-between flex ">
-              <label className="mr-16">categorie :</label>
+            {typeValue === "nouveau" && (
+              <div className="mb-4">
+                <label className="block font-semibold mb-2">Name:</label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
+                  {...register("name", { required: "Enter the material name" })}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="name"
+                  render={({ message }) => (
+                    <p className="text-red-500 mt-1">{message}</p>
+                  )}
+                />
+              </div>
+            )}
+
+            <div className="mb-4">
+              <label className="block font-semibold mb-2">Category:</label>
               <input
                 type="text"
-                className=" flex-1 shadow-xl px-2 rounded-xl"
-                {...register("categorie", { required: "Enter the categorie" })}
+                className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
+                {...register("categorie", { required: "Enter the category" })}
+              />
+              <ErrorMessage
+                errors={errors}
+                name="categorie"
+                render={({ message }) => (
+                  <p className="text-red-500 mt-1">{message}</p>
+                )}
               />
             </div>
-            <ErrorMessage
-              errors={errors}
-              name="categorie"
-              render={({ message }) => (
-                <p className=" mx-0 mb-2 ml-40 error-message">{message}</p>
-              )}
-            />
 
-            <div className="my-6 flex justify-between">
-              <label className="mr-12">Description : </label>
+            <div className="mb-4">
+              <label className="block font-semibold mb-2">Description:</label>
               <textarea
-                className="h-[200px] flex-1 shadow-xl px-2 rounded-xl"
-                {...register("description", {
-                  required: "adding a description would be helpful",
-                })}
+                className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
+                {...register("description", { required: "Add a description" })}
+              />
+              <ErrorMessage
+                errors={errors}
+                name="description"
+                render={({ message }) => (
+                  <p className="text-red-500 mt-1">{message}</p>
+                )}
               />
             </div>
-            <ErrorMessage
-              errors={errors}
-              name="description"
-              render={({ message }) => (
-                <p className=" mx-0 mb-2 ml-40 error-message">{message}</p>
-              )}
-            />
-            <button
-              className="bg-green-500 self-center p-2 rounded-xl mt-12"
-              type="submit"
-            >
-              Valider
-            </button>
+
+            <div className="flex justify-end">
+              <button
+                type="button"
+                className="mr-4 px-4 py-2 text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none"
+                onClick={() => setIsAdd(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-6 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none"
+              >
+                Submit
+              </button>
+            </div>
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };

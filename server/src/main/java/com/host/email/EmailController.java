@@ -1,8 +1,12 @@
 package com.host.email;
 
 
+import com.host.accounts.User;
+import com.host.accounts.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,13 +26,15 @@ public class EmailController {
         @Autowired
         private EmailFileRepo emailFileRepo;
 
+        @Autowired
+        private UserRepo userRepo;
+
 
         private static final String UPLOAD_DIR = "uploads/";
 
         @GetMapping("/get")
         public List<Email> getAllEmails() {
-            List<Email> emails = emailRepo.findAll();
-            return emails;
+            return emailRepo.findAll();
         }
 
 
@@ -38,19 +44,25 @@ public class EmailController {
     public ResponseEntity<String> createEmail(
             @RequestPart("subject") String subject,
             @RequestPart("content") String content,
-            @RequestPart("receiver") String receiver,
+            @RequestPart("receiver") String emailreceiver,
             @RequestPart(value = "files", required = false) MultipartFile[] files) {
 
         try {
             if (files == null) {
                 files = new MultipartFile[0]; // Empty array as default
             }
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            User user = userRepo.findByEmail(username).get();
+            User receiver = userRepo.findByEmail(emailreceiver).get();
             Email email = new Email();
             email.setFavorite(false);
             email.setDeleted(false);
             email.setSubject(subject);
             email.setContent(content);
-            email.setReciver(receiver);
+            email.setReceiver(receiver);
+            email.setSender(user);
             email.setDate(new Date().toString());
             email.setFiles(new ArrayList<>());
 
@@ -61,7 +73,6 @@ public class EmailController {
 
                     EmailFile emailFile = new EmailFile();
                     emailFile.setFilename(file.getOriginalFilename());
-                    emailFile.setEmail(email);
                     emailFile.setFileType(file.getContentType());
                     emailFile.setFilepath(path.toString());
                     email.getFiles().add(emailFile);
@@ -87,11 +98,7 @@ public class EmailController {
         public Email makeFavorite(@PathVariable long id ){
 
                 Email email = emailRepo.findById(id).get();
-                if(email.getFavorite()){
-                    email.setFavorite(false);
-                }else{
-                    email.setFavorite(true);
-                }
+            email.setFavorite(!email.getFavorite());
                 email = emailRepo.save(email);
                return  email;
             }
@@ -113,10 +120,7 @@ public class EmailController {
             }
             return emails;
         }
-        @GetMapping("/deletedemails")
-        public List<Email> getemailDeleted(){
-            return emailRepo.findEmailsDeleted();
-        }
+
 
 
         @PostMapping("/deleteEmailsforever")
@@ -139,6 +143,14 @@ public class EmailController {
                 emails.add(email);
             }
             return emails;
+        }
+        @GetMapping("/findAllEmails")
+    public List<String> finAllEmails(){
+            return userRepo.findAllByEmail();
+        }
+        @GetMapping("deletedemails")
+    public List<Email> getDeletedEmails(){
+            return emailRepo.findEmailsDeleted();
         }
 
 

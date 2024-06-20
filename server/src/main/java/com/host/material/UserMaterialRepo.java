@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,4 +19,8 @@ public interface UserMaterialRepo extends JpaRepository<UserMaterial,Long> {
     Optional<UserMaterial> findByMaterial_IdAndUser_Id(Long material, Long user);
     @Query(value = "select * from user_material where material_id= ?1 and last_date is null " , nativeQuery = true)
     Optional<UserMaterial> findUserMaterialHavingAnOldOwner(Long id);
+
+
+
+
 }

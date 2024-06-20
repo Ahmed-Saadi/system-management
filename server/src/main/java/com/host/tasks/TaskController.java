@@ -1,5 +1,7 @@
 package com.host.tasks;
 
+import com.host.accounts.User;
+import com.host.accounts.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,8 @@ public class TaskController {
     private TaskRepo taskRepo;
     @Autowired
     private TaskFileRepo taskFileRepo;
+    @Autowired
+    private UserRepo userRepo;
 
     private static final String UPLOAD_DIR = "uploads/";
 
@@ -33,11 +37,11 @@ public class TaskController {
             @RequestPart("description") String description,
             @RequestPart("assignee") String assignee,
             @RequestPart(value = "files", required = false) MultipartFile[] files) {
-
+        User user = userRepo.findByEmail(assignee).get();
         Date date = new Date();
         Task task = new Task();
         task.setTitle(title);
-        task.setAssignee(assignee);
+        task.setAssignee(user);
         task.setDescription(description);
         task.setStatus("To Do");
         task.setDate(date.toString());

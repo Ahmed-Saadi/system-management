@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-
-// Import your models here
 import { RequestTicket } from "../../models/model";
 import api from "../../api/api";
+import { useAccountStore } from "../../store/profileStore";
 
 export const Support = () => {
   const [addNewRequest, setAddNewRequest] = useState<boolean>(true);
@@ -16,18 +15,30 @@ export const Support = () => {
     formState: { errors },
     reset,
   } = useForm<RequestTicket>({});
+  const { setAccount, account } = useAccountStore((state: any) => ({
+    account: state.account,
+    setAccount: state.setAccount,
+  }));
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     api.get("/support/get").then((response) => {
+      
       const sortedRequests = response.data.sort(
         (a: any, b: any) =>
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
       setRequests(sortedRequests);
+
+      
     });
-  }, []);
+  }, [showRequest]);
+  useEffect(()=>{
+    api.post("/v1/auth/checkprivilege").then((response) => {
+      setAccount(response.data);
+    });
+  },[])
 
   const handleClickBtn = () => {
     setAddNewRequest(true);
@@ -40,23 +51,29 @@ export const Support = () => {
   };
 
   const submitForm = (request: RequestTicket) => {
-    api.post("/support/create", request).then((response) => {
-      const updatedRequests = [response.data, ...requests];
-      updatedRequests.sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
-      setRequests(updatedRequests);
-      setAddNewRequest(false);
-      setShowRequest(response.data);
-      reset();
-    });
+    const myObject = { ...request, sender: account };
+    
+    api
+      .post("/support/create", myObject,{ headers: {
+        'Content-Type': 'application/json'
+      }})
+      .then((response) => {
+        const updatedRequests = [response.data, ...requests];
+        updatedRequests.sort(
+          (a, b) =>
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
+        setRequests(updatedRequests);
+        setAddNewRequest(false);
+        setShowRequest(response.data);
+        reset();
+      });
   };
 
   const handleClickBtnSendMessage = (request: RequestTicket) => {
     const message = document.getElementById("message") as HTMLTextAreaElement;
     if (message.value.trim().length > 0) {
-      const updatedRequest = { ...request, requestMessage: message.value };
+      const updatedRequest = { ...request, requestMessage: message.value ,sender:account};
 
       api
         .post("/support/update", updatedRequest)
@@ -77,6 +94,7 @@ export const Support = () => {
         });
     }
   };
+
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -85,13 +103,13 @@ export const Support = () => {
 
   return (
     <>
-      <div className="h-full w-full flex flex-col bg-first-color">
+      <div className="h-full w-full flex flex-col bg-gray-100">
         <div className="flex justify-center items-center p-4 m-4 bg-white shadow-xl text-3xl font-bold rounded-full">
           <h1>Support</h1>
         </div>
         <div className="flex w-full h-[80%] mx-4">
           <div className="w-[30%] bg-white mx-2 rounded-2xl shadow-lg p-3 flex flex-col">
-            <div className="flex shadow-lg my-2 h-16 justify-end items-center rounded-md ">
+            <div className="flex shadow-lg my-2 h-16 justify-end items-center rounded-md">
               <button
                 className="bg-blue-500 rounded-md px-2 h-12 mx-4 text-white hover:bg-blue-700"
                 onClick={handleClickBtn}
@@ -99,7 +117,7 @@ export const Support = () => {
                 New Request
               </button>
             </div>
-            <div className="flex shadow-lg my-2 justify-end items-center rounded-md flex-col">
+            <div className="flex shadow-lg my-2 justify-end items-center rounded-md flex-col overflow-y-auto">
               {requests.length > 0 &&
                 requests.map((req: RequestTicket) => (
                   <span
@@ -113,7 +131,7 @@ export const Support = () => {
             </div>
           </div>
 
-          <div className="mx-2 bg-[#ECFFFD] w-[66%] rounded-2xl shadow-lg p-3">
+          <div className="mx-2 bg-white w-[66%] rounded-2xl shadow-lg p-3">
             {addNewRequest && (
               <div className="flex flex-col">
                 <div className="flex flex-col p-6 bg-white rounded shadow-md w-1/2 mx-auto mt-12">
@@ -191,7 +209,7 @@ export const Support = () => {
               </div>
             )}
             {showRequest && (
-              <div className="flex flex-col shadow rounded-lg overflow-hidden ">
+              <div className="flex flex-col shadow rounded-lg overflow-hidden">
                 <div className="flex justify-between items-center bg-white my-1 font-semibold px-2 text-2xl">
                   <h1>{showRequest.subject}</h1>
                   <h1>
@@ -201,19 +219,25 @@ export const Support = () => {
                 </div>
                 <div className="bg-white p-4 shadow-inner rounded-lg h-[500px] overflow-y-auto flex-col flex">
                   {showRequest.supportMessagesList?.map((message) => (
-                    <div className="mx-4 flex flex-col " key={message.id}>
-                      <p className="text-xs p-1  self-end">
-                        {new Date(message.sentAt).toLocaleString()}
-                      </p>
-                      <div className="bg-green-100 p-2 rounded-md">
-                        {message.content}
-                      </div>
+                    message.sender?.u_id === account.u_id ? (<div className="mx-4 flex flex-col" key={message.id}>
+                    <p className="text-xs p-1 self-end">
+                      {new Date(message.sentAt).toLocaleString()}
+                    </p>
+                    <div className="bg-green-100 p-2 rounded-md ">
+                      {message.content}
                     </div>
+                  </div>):(<div className="mx-4 flex flex-col" key={message.id}>
+                    <p className="text-xs p-1 self-start">
+                      {new Date(message.sentAt).toLocaleString()}
+                    </p>
+                    <div className="bg-blue-100 p-2 rounded-md text-end">
+                      {message.content}
+                    </div>
+                  </div>)
                   ))}
                   <div ref={messagesEndRef} />
                 </div>
-
-                <div className="flex justify-start items-start ">
+                <div className="flex justify-start items-start">
                   <textarea
                     id="message"
                     className="w-[90%] m-4 focus:outline-none shadow-md resize-none h-40 p-4 rounded-md"

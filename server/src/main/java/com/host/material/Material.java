@@ -1,5 +1,6 @@
 package com.host.material;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,8 @@ public class Material {
     private String name;
     private String categorie;
     private String date;
-    @OneToMany(mappedBy = "material_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference("materialRefrence")
     private List<UserMaterial> owner  = new ArrayList<>();
 
 

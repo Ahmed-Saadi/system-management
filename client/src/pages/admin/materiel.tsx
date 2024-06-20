@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Material } from "../../models/model.ts";
-import axios from "axios";
 import { AddMateriel } from "../../component/admin/addMateriel.tsx";
 import { MaterialDetails } from "../../component/admin/materialDetails.tsx";
 import DataTable from "../../component/admin/table_admin.tsx";

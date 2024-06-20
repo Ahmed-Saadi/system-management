@@ -8,8 +8,10 @@ import ProtectedRoute from "./auth/protectedRoute";
 import { Notfound } from "./pages/notfound";
 import "./App.css";
 
+
 const AppRoutes: React.FC = () => {
- 
+
+  
 
  
 
@@ -39,3 +41,5 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+

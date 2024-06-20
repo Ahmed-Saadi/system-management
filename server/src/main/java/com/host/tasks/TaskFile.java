@@ -22,7 +22,7 @@ public class TaskFile {
 
         @ManyToOne
         @JoinColumn(name = "task_id")
-        @JsonBackReference
+        @JsonBackReference("taskRefrence")
         private Task task;
 
 

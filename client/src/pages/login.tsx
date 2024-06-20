@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import api from "../api/api";
 import Loading from "./Loading";
 import { useAuth } from "../auth/auth.tsx";
+import { useAccountStore } from "../store/profileStore.ts";
 
 interface User {
   username: string;
@@ -19,6 +20,10 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { login } = useAuth();
+  const {setAccount} = useAccountStore( (state:any) =>( {
+    account:state.account,
+    setAccount:state.setAccount
+  }))
 
   const onSubmit = (data: User) => {
     setIsLoading(true);
@@ -39,7 +44,8 @@ const Login: React.FC = () => {
     api
       .post("/v1/auth/checkprivilege")
       .then((response) => {
-        const role = response.data;
+        setAccount(response.data)
+        const role = response.data.role.toLowerCase();
         login(token, role);
         setIsLoading(false);
       })

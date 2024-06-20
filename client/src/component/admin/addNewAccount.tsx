@@ -82,7 +82,7 @@ export const AddNewAccount: React.FC<props> = ({
             <div className="span-costum-configuration">
               <label>Name :</label>
               <input
-                {...register("username", {
+                {...register("firstname", {
                   required: "Enter your name ",
                 })}
                 className="input-costum-configuration"
@@ -90,7 +90,7 @@ export const AddNewAccount: React.FC<props> = ({
             </div>
             <ErrorMessage
               errors={errors}
-              name="username"
+              name="firstname"
               render={({ message }) => (
                 <p className=" error-message">{message}</p>
               )}
@@ -98,7 +98,7 @@ export const AddNewAccount: React.FC<props> = ({
             <div className="span-costum-configuration">
               <label>Familly Name : </label>
               <input
-                {...register("family_name", {
+                {...register("lastname", {
                   required: "Enter your familly name",
                 })}
                 className="input-costum-configuration"
@@ -106,7 +106,7 @@ export const AddNewAccount: React.FC<props> = ({
             </div>
             <ErrorMessage
               errors={errors}
-              name="family_name"
+              name="lastname"
               render={({ message }) => (
                 <p className=" error-message">{message}</p>
               )}
@@ -136,10 +136,7 @@ export const AddNewAccount: React.FC<props> = ({
               <input
                 {...register("phone_number", {
                   required: "Please enter your phone number",
-                  pattern: {
-                    value: /^\+(?:[0-9] ?){11}[0-9]$/,
-                    message: "Invalid phone number format",
-                  },
+                  
                 })}
                 className="input-costum-configuration"
                 placeholder="+212-000-000-000"

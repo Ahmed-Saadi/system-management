@@ -7,6 +7,7 @@ import { Notfound } from "./notfound";
 
 import { Demande } from "./admin/demands";
 import { Support } from "./admin/supportAdmin";
+import {  Teams } from "./admin/Team";
 
 export const Admin: React.FC = () => {
   const navigate = useNavigate();
@@ -29,13 +30,13 @@ export const Admin: React.FC = () => {
             <h3 className="pl-4">PFE</h3>
           </div>
           <div className="flex flex-col">
-            <Link to="dashboard">
+            <Link to="teams">
               <div className="flex   items-center  text-2xl p-4 shadow hover:bg-second-color">
                 <img
-                  src="../public/icons/dashboard-icon.svg"
+                  src="../public/icons/team-admin-icon.svg"
                   alt="dash icon "
                 />
-                <p className="pl-4">Dashboard</p>
+                <p className="pl-4">Teams</p>
               </div>
             </Link>
             <Link to="demandes">
@@ -73,7 +74,7 @@ export const Admin: React.FC = () => {
         <Routes>
           <Route path="" element={<Dashbord />} />
           <Route path="demandes" element={<Demande />} />
-          <Route path="dashboard" element={<Dashbord />} />
+          <Route path="teams" element={<Teams/>} />
           <Route path="materiel" element={<Materiel />} />
           <Route path="accounts" element={<Accounts />} />
           <Route path="support" element={<Support />} />

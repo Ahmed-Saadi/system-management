@@ -9,15 +9,16 @@ export const Demande: React.FC = () => {
   const [ismodify, setIsmodify] = useState<boolean>(false);
 
   useEffect(() => {
-    api.get("/demands/get").then((response) => {
-      console.log(response.data);
+    api.get("/demandsMaterial/get").then((response) => {
       setDemands(response.data);
     });
   }, []);
 
-  const handleSubmitBtn = (e: React.FormEvent<HTMLFormElement>,demande:Material_Demand) => {
+  const handleSubmitBtn = (
+    e: React.FormEvent<HTMLFormElement>,
+    demande: Material_Demand
+  ) => {
     e.preventDefault();
-
     const form = e.currentTarget;
     const selectElement = form.querySelector("select");
     const textareaElement = form.querySelector("textarea");
@@ -26,27 +27,30 @@ export const Demande: React.FC = () => {
       const status = selectElement.value;
       const comment = textareaElement.value;
       const formData = {
-        "id":demande.d_id,
-        "status":status,
-        "comment":comment,
-        
-      }
-      console.log(formData)
+        id: demande.d_id,
+        response: status,
+        comment,
+      };
 
-      api.post("/demands/material/update",formData).then((response) =>{ 
-        console.log(response.data)
-      })
-      
+      api
+        .post("/demandsMaterial/material/update", formData)
+        .then((response) => {
+          setShowRow(null)
+          setDemands((prevState) => prevState.map((demand) => demand.d_id === response.data.d_id ? response.data: demand))
+          
+        }).catch((error) => console.log('had error ikhan',error))
+
       selectElement.value = "accepter";
       textareaElement.value = "";
+      setIsmodify(false);
     }
   };
 
   return (
     <>
-      <div className="flex  w-full bg-first-color p-8">
+      <div className="flex w-full bg-first-color p-8">
         <div className="flex flex-col items-center justify-start flex-1">
-          <div className="font-bold text-4xl py-6 bg-white   rounded-3xl  shadow-md  w-64 flex items-center justify-center">
+          <div className="font-bold text-4xl py-6 bg-white rounded-3xl shadow-lg w-64 flex items-center justify-center">
             <h1>Demandes</h1>
           </div>
           <div className="flex">
@@ -65,8 +69,8 @@ export const Demande: React.FC = () => {
           </div>
         </div>
         {showRow && (
-          <div className="w-[40%]  flex flex-col justify-start my-24">
-            <div className="bg-white rounded-lg shadow-lg ">
+          <div className="w-[40%] flex flex-col justify-start my-24">
+            <div className="bg-white rounded-lg shadow-lg">
               <div className="px-4 py-2 border-b flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Demand Details</h2>
               </div>
@@ -84,7 +88,7 @@ export const Demande: React.FC = () => {
                   <span>{showRow.categorie}</span>
                 </div>
                 <div className="mb-4 flex justify-between mx-4">
-                  <span className="font-semibold">Descritpion:</span>
+                  <span className="font-semibold">Description:</span>
                   <span>{showRow.description ? showRow.description : "-"}</span>
                 </div>
                 <div className="mb-4 flex justify-between mx-4">
@@ -97,46 +101,49 @@ export const Demande: React.FC = () => {
                 </div>
                 {showRow.comment && (
                   <div className="mb-4 flex justify-between mx-4">
-                    <span className="font-semibold">message: </span>
+                    <span className="font-semibold">Message: </span>
                     <span>{showRow.comment}</span>
                   </div>
                 )}
               </div>
-              {!ismodify && !showRow.comment &&(
-                <div className="mb-4 flex justify-center mx-4 ">
+              {!ismodify && !showRow.comment && (
+                <div className="mb-4 flex justify-center mx-4">
                   <button
                     className="bg-blue-500 p-2 rounded text-white"
                     onClick={() => setIsmodify(true)}
                   >
-                    repondre
+                    Repondre
                   </button>
                 </div>
               )}
               {ismodify && (
                 <form
                   className="flex flex-col w-full items-center"
-                  onSubmit={(e) => handleSubmitBtn(e,showRow)}
+                  onSubmit={(e) => handleSubmitBtn(e, showRow)}
                 >
                   <div>
                     <select className="w-64 text-lg font-semibold text-center border-2 mb-4 outline-none">
-                      <option value="accepter" defaultValue='true'>
-                        accepter
+                      <option value="accepter" defaultValue="true">
+                        Accepter
                       </option>
-                      <option value="annuler">annuler</option>
+                      <option value="annuler">Annuler</option>
                     </select>
                   </div>
-                  <div className="w-[70%]  mb-4">
+                  <div className="w-[70%] mb-4">
                     <textarea className="w-full border-2 outline-none resize-none"></textarea>
                   </div>
-                  <div className="text-md mb-4 text-white flex w-full  justify-center">
+                  <div className="text-md mb-4 text-white flex w-full justify-center">
                     <button
                       type="submit"
                       className="bg-green-600 mx-12 p-2 rounded-md"
                     >
-                      valider
+                      Valider
                     </button>
-                    <button className="bg-red-600 p-2 rounded-md">
-                      annuler
+                    <button
+                      className="bg-red-600 p-2 rounded-md"
+                      onClick={() => setIsmodify(false)}
+                    >
+                      Annuler
                     </button>
                   </div>
                 </form>

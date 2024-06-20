@@ -23,7 +23,7 @@ public class EmailFile {
 
     @ManyToOne
     @JoinColumn(name = "email_id")
-    @JsonBackReference
+    @JsonBackReference("emailFileRefrence")
     private Email email;
 
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { TaskInterface } from "../../models/model";
+import { TaskInterface, Team } from "../../models/model";
 import { AddTask } from "../../component/client/addTask";
 import { useTaskStore } from "../../store/TaskStore";
-import axios from "axios";
-import { ShowTaskRow } from "../../component/client/showtaskrow";
 import api from "../../api/api";
+import { ShowTaskRow } from "../../component/client/showtaskrow";
+import { ShowTeam } from "../../component/client/ShowTeam";
 
 interface TaskProps {
   task: TaskInterface;
@@ -29,6 +29,7 @@ export const Tasks: React.FC = () => {
   }));
   const [add, setAdd] = useState<boolean>(false);
   const [showTask, setShowTask] = useState<TaskInterface | null>(null);
+  const [team,setTeam] = useState<Team | null >(null)
 
   useEffect(() => {
     api.get("/task/get").then((response) => setTasks(response.data));
@@ -38,7 +39,6 @@ export const Tasks: React.FC = () => {
     api
       .post("/task/updateState", { id, status })
       .then((response) => {
-        console.log(response.data);
         updateTaskStatus(id, status);
       })
       .catch((error) => {
@@ -49,16 +49,22 @@ export const Tasks: React.FC = () => {
   const tasksByStatus = (status: string) =>
     tasks.filter((task: TaskInterface) => task.status === status);
 
-  console.log(showTask);
+  function showTeam() {
+    api.get("/team/getuserTeam").then((response) => {
+      setTeam(response.data)}
+    ).catch((error ) => console.log('error : ',error))
+  }
+
   return (
     <>
       <DndProvider backend={HTML5Backend}>
-        <div className="flex flex-col h-screen bg-first-color">
-          <div className="h-16 w-full bg-black text-white flex items-center justify-center">
-            <p>Task Management</p>
+        <div className="flex flex-col justify-start bg-gray-100 h-full">
+          <div className="h-16 w-full bg-white text-black flex  items-center justify-center shadow-md">
+            <p className="text-2xl font-semibold flex-grow text-center ">Task Management</p>
+           <button onClick={showTeam} className="self-center p-2 mx-12  bg-blue-500 rounded-md text-white">Team</button>
           </div>
 
-          <div className="flex flex-grow">
+          <div className="flex flex-grow mx-4 my-2">
             <Column
               status="To Do"
               tasks={tasksByStatus("To Do")}
@@ -87,6 +93,9 @@ export const Tasks: React.FC = () => {
       {showTask && (
         <ShowTaskRow showTask={showTask} setShowTask={setShowTask} />
       )}
+      {team && <ShowTeam  setTeam={setTeam} team={team}/>
+
+      }
     </>
   );
 };
@@ -103,7 +112,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
   return (
     <div
       ref={drag}
-      className={`p-2 m-2 border rounded bg-white ${
+      className={`p-2 m-2 border rounded bg-white text-black shadow-sm ${
         isDragging ? "opacity-50" : "opacity-100"
       }`}
     >
@@ -129,23 +138,32 @@ const Column: React.FC<ColumnProps> = ({
   };
 
   return (
-    <div ref={drop} className="w-1/3 p-4 bg-gray-200 border">
-      <div className="flex justify-between">
-        <h2 className="text-xl font-bold">{status}</h2>
+    <div
+      ref={drop}
+      className="flex flex-col w-1/3 p-4 bg-gray-200 border border-gray-300 mx-2 rounded-md shadow-lg"
+    >
+      <div className="flex justify-between mb-2">
+        <h2 className="text-xl font-bold text-black">{status}</h2>
         {status === "To Do" && (
           <button
-            className="bg-green-500  w-20 mx-2 rounded-lg font-bold text-white"
+            className="bg-blue-500 w-20 rounded-lg font-bold text-white hover:bg-blue-600"
             onClick={() => handleAddClick(true)}
           >
-            add
+            Add
           </button>
         )}
       </div>
-      {tasks.map((task) => (
-        <div onClick={() => setShowTask(task)} className="hover">
-          <Task key={task.id} task={task} moveTask={moveTask} />
-        </div>
-      ))}
+      <div className="flex flex-col space-y-2">
+        {tasks.map((task) => (
+          <div
+            key={task.id}
+            onClick={() => setShowTask(task)}
+            className="cursor-pointer hover:bg-gray-300"
+          >
+            <Task task={task} moveTask={moveTask} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

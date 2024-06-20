@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { Demand_congéer, Material_Demand } from "../models/model";
-
+import { Demand_conger, Material_Demand } from "../models/model";
 
 export const useDemandeStore = create((set) => ({
   demands: [],
@@ -17,19 +16,17 @@ export const useDemandeStore = create((set) => ({
     })),
 }));
 
-
-
 export const useDemandeCongéStore = create((set) => ({
   demands: [],
-  setDemands: (data: Demand_congéer[]) => set({ demands: data }),
-  addDemande: (demande: Demand_congéer) =>
+  setDemands: (data: Demand_conger[]) => set({ demands: data }),
+  addDemande: (demande: Demand_conger) =>
     set((state: any) => ({
       demands: [...state.demands, demande],
     })),
   removeDemande: (demandeId: number) =>
     set((state: any) => ({
       demands: state.demands.filter(
-        (demande: Demand_congéer) => demande.dc_id !== demandeId
+        (demande: Demand_conger) => demande.dc_id !== demandeId
       ),
     })),
 }));

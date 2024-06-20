@@ -51,7 +51,7 @@ export const MaterialDetails: React.FC<props> = ({
               setSelectedRow(null)
             }}
           >
-            <img src="./public/icons/edit-icon.svg" />
+            <img src="../public/icons/edit-icon.svg" />
           </button>
           <button
             className="material-Row-Btn hover:bg-forth-color p-2"
@@ -59,7 +59,7 @@ export const MaterialDetails: React.FC<props> = ({
               setSelectedRow(null)
             }}
           >
-            <img src="./public/icons/delete-icon.svg" />
+            <img src="../public/icons/delete-icon.svg" />
           </button>
           </div>
         </div>

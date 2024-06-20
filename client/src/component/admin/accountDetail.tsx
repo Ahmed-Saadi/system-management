@@ -40,8 +40,8 @@ export const AccountDetail: React.FC<props> = ({
   return (
     <div className=" flex items-center justify-center bg-first-color  h-full flex-col py-8 border-2 flex-grow p-8 text-xl font-semibold">
         <div className="p-4 my-4 bg-white w-2/3 text-center shadow-md rounded-full"><h1>Account Info</h1></div>
-        <div className="acount-info"><p className="p-2">Name :</p> <p className="p-2">{rowAccount.username}</p></div>
-        <div className="acount-info"><p className="p-2">Familly Name :</p> <p className="p-2">{rowAccount.family_name}</p></div>
+        <div className="acount-info"><p className="p-2">Name :</p> <p className="p-2">{rowAccount.firstname}</p></div>
+        <div className="acount-info"><p className="p-2">Familly Name :</p> <p className="p-2">{rowAccount.lastname}</p></div>
         <div className="acount-info"><p className="p-2">Email :</p> <p className="p-2"> {rowAccount.email}</p></div>
         <div className="acount-info"><p className="p-2">Phone Number :</p> <p className="p-2"> {rowAccount.phone_number}</p></div>
         <div className="acount-info"><p className="p-2">Date of Birth :</p> <p className="p-2"> {rowAccount.dob}</p></div>

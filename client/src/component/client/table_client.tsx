@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Demand_congéer, Material_Demand } from "../../models/model";
+import { Demand_conger, Material_Demand } from "../../models/model";
 
 interface DataTableProps {
-  data: (Material_Demand | Demand_congéer)[];
+  data: (Material_Demand | Demand_conger)[];
   columns: string[];
   handleviewClick: (arg0: any) => void;
 }

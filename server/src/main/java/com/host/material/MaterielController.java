@@ -1,9 +1,13 @@
 package com.host.material;
 import com.host.accounts.UserRepo;
 import com.host.accounts.User;
+import com.host.demandMaterial.Materiel_Owner;
+import com.host.demandMaterial.Owner;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -27,6 +31,8 @@ public class MaterielController {
 
 
 
+
+
     @PostMapping("/add")
     public ResponseEntity<Materiel_Owner> addmateriel(@RequestBody MaterialDto material) throws ParseException {
         Material material1 = new Material();
@@ -42,8 +48,8 @@ public class MaterielController {
         Optional<User> user = userRepo.findById(material.owner().u_id());
         if(user.isPresent()){
             UserMaterial userMaterial = new UserMaterial();
-            userMaterial.setMaterial_id(material1);
-            userMaterial.setUser_id(user.get());
+            userMaterial.setMaterial(material1);
+            userMaterial.setUser(user.get());
             userMaterial.setFirst_date(createDate());
             userMaterialRepo.save(userMaterial);
             Owner owner = createowner(user);
@@ -100,8 +106,8 @@ public class MaterielController {
             Optional<User> user = userRepo.findById(material.getOwner().u_id());
             if (user.isPresent()){
                 UserMaterial userMaterial = new UserMaterial();
-                userMaterial.setMaterial_id(existingMaterial);
-                userMaterial.setUser_id(user.get());
+                userMaterial.setMaterial(existingMaterial);
+                userMaterial.setUser(user.get());
                 userMaterial.setFirst_date(createDate());
                 userMaterialRepo.save(userMaterial);
                 existingMaterial.getOwner().add(userMaterial);
@@ -127,5 +133,17 @@ public class MaterielController {
     private String createDate() throws ParseException {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
+    @GetMapping("/getownerMAterials")
+    public List<Material> getOwnerMaterials(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Long id = userRepo.findByEmail(username).get().getU_id();
+        if(materialRepo.findMaterialsByUserId(id).isEmpty()){
+            return new ArrayList<>();
+        }else{
+            return materialRepo.findMaterialsByUserId(id);
+        }
 
+
+    }
 }

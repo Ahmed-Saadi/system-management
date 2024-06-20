@@ -15,6 +15,7 @@ export interface Account {
   dob: string;
   profession: string;
   gender: string;
+  profilePicture:string;
 }
 
 export interface Owner {
@@ -30,6 +31,7 @@ export interface Material_Demand {
   description: string;
   name: string;
   status: string;
+  response?:string;
   comment?:string;
 }
 
@@ -37,19 +39,22 @@ export interface Demand_conger {
   dc_id: number;
   name: string;
   type: string;
-  date_debut: String;
+  date_debut: string;
   date_fin: string;
   cause: string;
+  nb_days:number;
 }
 
 export interface Email {
   id?: number;
-  reciver: string;
+  userReciever: string;
   subject: string;
   content: string;
   date: string;
   favorite: boolean;
   files: File[];
+  receiver:Account;
+  sender:Account; 
 }
 
 export interface File {
@@ -81,7 +86,13 @@ export interface RequestTicket {
 }
 export interface RequestMessage{
   id:number;
-  sender?:string;
   content:string;
   sentAt:Date;
+  sender:Account;
+}
+export interface Team{
+  id:number;
+  creationDate:string;
+  teamLeader:Account;
+  members:Account[];
 }

@@ -33,18 +33,15 @@ public class AuthenticationController {
         }
     }
      @PostMapping("/checkprivilege")
-        public String checktheprivilegeoftheuser(){
+        public User  checktheprivilegeoftheuser(){
          Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
          String username = authentication.getName();
-                 User user = userRepo.findByEmail(username).get();
-                    if(user.getRole().name().equals("ADMIN") ){
-                return "admin";
-            }else {
-                return "user";
+          User user = userRepo.findByEmail(username).get();
+                   return user;
             }
 
         }
-    }
+
 
 
 

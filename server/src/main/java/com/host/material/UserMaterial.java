@@ -18,12 +18,12 @@ public class UserMaterial {
     private long user_material_id;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User user_id;
+    @JsonBackReference("userRefrence")
+    private User user;
     @ManyToOne
     @JoinColumn(name = "material_id")
-    @JsonBackReference
-    private Material material_id;
+    @JsonBackReference("materialRefrence")
+    private Material material;
 
     private String first_date;
     private String last_date;

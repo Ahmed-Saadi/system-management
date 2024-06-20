@@ -1,12 +1,13 @@
 package com.host.support;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.host.support.Support_Message;
+import com.host.accounts.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -20,12 +21,10 @@ import java.util.List;
 public class Support_Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long  id;
+    private long id;
     private String subject;
     private String status;
     private String Type;
-    private String sender;
-    private String reciver;
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
 
@@ -33,6 +32,11 @@ public class Support_Ticket {
     private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "supportTicket", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Support_Message> supportMessagesList = new ArrayList<>();;
+    @JsonManagedReference("supportMessagesList")
+    private List<Support_Message> supportMessagesList = new ArrayList<>();
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
